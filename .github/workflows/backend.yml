@@ -23,10 +23,11 @@ jobs:
       id: properties
       working-directory: ./sceat-backend
       run: |
-        echo "name=$(mvn help:evaluate -Dexpression="project.build.finalName" -q -DforceStdout)" >> $GITHUB_STATE
-        echo "hash=$(git rev-parse --short HEAD)" >> $GITHUB_STATE
+        echo "name=$(mvn help:evaluate -Dexpression="project.build.finalName" -q -DforceStdout)" >> $GITHUB_OUTPUT
+        echo "hash=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
     - name: Upload built JAR
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: ${{ steps.properties.outputs.name }}-${{ steps.properties.outputs.hash }}.jar
         path: ./sceat-backend/target/${{ steps.properties.outputs.name }}.jar
+        if-no-files-found: error
