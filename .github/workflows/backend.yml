@@ -16,8 +16,16 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-    - name: 'Build and test'
+    - name: Build and test
       working-directory: ./sceat-backend
       run: mvn clean package
-
-# TODO also add some sort of CD: make the built JAR downloadable from the GitHub Actions page
+    - name: Determine project properties
+      id: properties
+      run: |
+        echo ::set-output name=name::$(mvn help:evaluate -Dexpression="project.build.finalName" -q -DforceStdout)
+        echo ::set-output name=hash::$(git rev-parse --short HEAD)
+    - name: Upload built JAR
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ steps.properties.outputs.name }}-${{ steps.properties.outputs.hash }}.jar
+        path: target/${{ steps.properties.outputs.name }}.jar
