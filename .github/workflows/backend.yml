@@ -21,11 +21,12 @@ jobs:
       run: mvn clean package
     - name: Determine project properties
       id: properties
+      working-directory: ./sceat-backend
       run: |
-        echo ::set-output name=name::$(mvn help:evaluate -Dexpression="project.build.finalName" -q -DforceStdout)
-        echo ::set-output name=hash::$(git rev-parse --short HEAD)
+        echo "name=$(mvn help:evaluate -Dexpression="project.build.finalName" -q -DforceStdout)" >> $GITHUB_STATE
+        echo "hash=$(git rev-parse --short HEAD)" >> $GITHUB_STATE
     - name: Upload built JAR
       uses: actions/upload-artifact@v2
       with:
         name: ${{ steps.properties.outputs.name }}-${{ steps.properties.outputs.hash }}.jar
-        path: target/${{ steps.properties.outputs.name }}.jar
+        path: ./sceat-backend/target/${{ steps.properties.outputs.name }}.jar
