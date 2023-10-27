@@ -1,3 +1,8 @@
 package hu.sceat.backend.business.dto;
 
-public record UserDto(Long id, String username) {}
+import hu.sceat.backend.business.id.UserId;
+
+import java.util.Optional;
+
+public record UserDto(Long id, String username, Optional<ServerDto> serverProfile,
+		Optional<ConsumerDto> consumerProfile) implements UserId {}

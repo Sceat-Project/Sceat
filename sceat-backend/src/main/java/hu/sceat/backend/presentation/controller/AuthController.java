@@ -23,9 +23,10 @@ public class AuthController {
 		return ResponseUtil.respondOk(); //CSRF token is automatically attached
 	}
 	
-	@PostMapping("/register")
-	public ResponseEntity<Void> register(@RequestParam String username, @RequestParam String password) {
-		return authService.register(username, password)
+	@PostMapping("/register/consumer")
+	public ResponseEntity<Void> registerConsumer(@RequestParam String username, @RequestParam String password,
+			@RequestParam Long organization) {
+		return authService.registerConsumer(username, password, organization)
 				.get(u -> ResponseUtil.respondOk(), ResponseUtil::respondFail);
 	}
 }
