@@ -18,6 +18,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -88,5 +89,13 @@ public class Consumer {
 	
 	public Optional<byte[]> getPhoto() {
 		return Optional.ofNullable(photo);
+	}
+	
+	public void setAllergies(Set<Allergen> allergies) {
+		this.allergies = EnumSet.copyOf(allergies);
+	}
+	
+	public void setPhoto(byte[] photo) {
+		this.photo = Arrays.copyOf(photo, photo.length);
 	}
 }

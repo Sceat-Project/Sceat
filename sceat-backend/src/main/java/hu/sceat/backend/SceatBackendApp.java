@@ -44,9 +44,9 @@ public class SceatBackendApp {
 			
 			OrganizationId org = orgService.create("SampleSchool").orElseThrow();
 			
-			UserId server = authService.registerServer("server-a", "password", org.getId())
-					.orElseThrow();
-			authService.registerConsumer("consumer-a", "password", org.getId());
+			UserId server = authService.registerServer("server-a", "password",
+							"ServerA", org.getId()).orElseThrow();
+			authService.registerConsumer("consumer-a", "password", "ConsumerA", org.getId());
 			
 			menuService.create(server, org.getId(), "Vegetarian Lunch", LocalDate.now(), Occasion.LUNCH, 42,
 					List.of("Fish", "Chips"), Set.of(Allergen.FISH, Allergen.GLUTEN));

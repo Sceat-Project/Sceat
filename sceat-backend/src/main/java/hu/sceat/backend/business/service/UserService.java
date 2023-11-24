@@ -23,17 +23,20 @@ public class UserService {
 	
 	@Transactional
 	public Try<UserDto, Fail> findById(UserId requester, Long userId) {
-		return find(requester, UserRepository.same(User.fromId(userId)), "user " + userId);
+		return getById(requester, userId)
+				.map(DtoMapper.INSTANCE::toUser);
 	}
 	
 	@Transactional
 	public Try<UserDto, Fail> findByEmail(UserId requester, String email) {
-		return find(requester, UserRepository.hasEmail(email), "user email " + email);
+		return getBySpecification(requester, UserRepository.hasEmail(email), "user email " + email)
+				.map(DtoMapper.INSTANCE::toUser);
 	}
 	
 	@Transactional
 	public Try<UserDto, Fail> findByName(UserId requester, String name) {
-		return find(requester, UserRepository.hasName(name), "user name " + name);
+		return getBySpecification(requester, UserRepository.hasName(name), "user name " + name)
+				.map(DtoMapper.INSTANCE::toUser);
 	}
 	
 	@Transactional
@@ -42,9 +45,13 @@ public class UserService {
 		return DtoMapper.INSTANCE.toUser(user);
 	}
 	
-	private Try<UserDto, Fail> find(UserId requester, Specification<User> spec, String failMessage) {
-		return Try.<User, Fail>from(userRepo.findOne(spec), CommonFail.notFound(failMessage))
+	@Transactional
+	Try<User, Fail> getById(UserId requester, Long userId) {
+		return getBySpecification(requester, UserRepository.same(User.fromId(userId)), "user " + userId);
+	}
+	
+	private Try<User, Fail> getBySpecification(UserId requester, Specification<User> spec, String failMessage) {
+		return Try.from(userRepo.findOne(spec), CommonFail.notFound(failMessage));
 				//TODO some extra filters
-				.map(DtoMapper.INSTANCE::toUser);
 	}
 }

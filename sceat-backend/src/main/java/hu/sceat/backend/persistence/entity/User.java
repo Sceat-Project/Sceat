@@ -89,4 +89,12 @@ public class User {
 	public Optional<Consumer> getConsumerProfile() {
 		return Optional.ofNullable(consumerProfile);
 	}
+	
+	public boolean isServer() {
+		return serverProfile != null;
+	}
+	
+	public boolean isConsumer() {
+		return consumerProfile != null;
+	}
 }
