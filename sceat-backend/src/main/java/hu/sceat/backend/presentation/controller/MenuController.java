@@ -9,6 +9,7 @@ import hu.sceat.backend.presentation.util.ResponseUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,8 +34,8 @@ public class MenuController {
 				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
 	}
 	
-	@GetMapping("/create")
-	public ResponseEntity<MenuDto> get(PrincipalUser principal, @RequestParam Long organizationId,
+	@PostMapping("/create")
+	public ResponseEntity<MenuDto> postCreate(PrincipalUser principal, @RequestParam Long organizationId,
 			@RequestParam String name, @RequestParam LocalDate date, @RequestParam Occasion occasion,
 			@RequestParam int cost, @RequestParam List<String> foods, @RequestParam Set<Allergen> allergens) {
 		return menuService.create(principal, organizationId, name, date, occasion, cost, foods, allergens)

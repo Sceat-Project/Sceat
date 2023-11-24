@@ -1,20 +1,14 @@
 package hu.sceat.backend.presentation.controller;
 
 import hu.sceat.backend.business.PrincipalUser;
-import hu.sceat.backend.business.dto.MenuDto;
 import hu.sceat.backend.business.dto.UserDto;
 import hu.sceat.backend.business.service.UserService;
-import hu.sceat.backend.persistence.entity.Occasion;
 import hu.sceat.backend.presentation.util.ResponseUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDate;
-import java.util.Collection;
 
 @RestController
 @RequestMapping("/api/user")
@@ -33,39 +27,19 @@ public class UserController {
 	}
 	
 	@GetMapping("/email/{email}")
-	public ResponseEntity<UserDto> findEmail(PrincipalUser principal, @PathVariable String email) {
+	public ResponseEntity<UserDto> getByEmail(PrincipalUser principal, @PathVariable String email) {
 		return userService.findByEmail(principal, email)
 				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
 	}
 	
 	@GetMapping("/name/{name}")
-	public ResponseEntity<UserDto> findName(PrincipalUser principal, @PathVariable String name) {
+	public ResponseEntity<UserDto> getByName(PrincipalUser principal, @PathVariable String name) {
 		return userService.findByName(principal, name)
 				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
 	}
 	
-	@GetMapping("/id/{userId}/menu")
-	public ResponseEntity<Collection<MenuDto>> getMenu(PrincipalUser principal, @PathVariable Long userId,
-			@RequestParam Long organizationId, @RequestParam LocalDate date, @RequestParam Occasion occasion) {
-		return userService.getMenu(principal, userId, organizationId, date, occasion)
-				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
-	}
-	
 	@GetMapping("/self")
-	public ResponseEntity<UserDto> self(PrincipalUser principal) {
+	public ResponseEntity<UserDto> getSelf(PrincipalUser principal) {
 		return ResponseUtil.respondOk(userService.getSelf(principal));
-	}
-	
-	@GetMapping("/self/purchasedMenus")
-	public ResponseEntity<Collection<MenuDto>> selfPurchasedMenus(PrincipalUser principal,
-			@RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
-		return userService.getPurchasedMenus(principal, principal.id(), startDate, endDate)
-				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
-	}
-	
-	@GetMapping("/self/photo")
-	public ResponseEntity<byte[]> selfPhoto(PrincipalUser principal) {
-		return userService.getPhoto(principal, principal.id())
-				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
 	}
 }
