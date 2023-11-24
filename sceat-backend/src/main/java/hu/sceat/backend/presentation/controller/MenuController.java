@@ -2,6 +2,7 @@ package hu.sceat.backend.presentation.controller;
 
 import hu.sceat.backend.business.PrincipalUser;
 import hu.sceat.backend.business.dto.MenuDto;
+import hu.sceat.backend.business.dto.UserRefDto;
 import hu.sceat.backend.business.service.MenuService;
 import hu.sceat.backend.persistence.entity.Allergen;
 import hu.sceat.backend.persistence.entity.Occasion;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -35,7 +37,12 @@ public class MenuController {
 				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
 	}
 	
-	//TODO query purchasers
+	@GetMapping("/id/{menuId}/purchasers")
+	public ResponseEntity<Collection<UserRefDto>> getPurchasers(PrincipalUser principal,
+			@PathVariable Long menuId) {
+		return menuService.getPurchasers(principal, menuId)
+				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
+	}
 	
 	@PostMapping("/id/{menuId}/delete")
 	public ResponseEntity<Unit> postDelete(PrincipalUser principal, @PathVariable Long menuId) {

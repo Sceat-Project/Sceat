@@ -2,11 +2,13 @@ package hu.sceat.backend.business.service;
 
 import hu.sceat.backend.business.dto.DtoMapper;
 import hu.sceat.backend.business.dto.MenuDto;
+import hu.sceat.backend.business.dto.UserRefDto;
 import hu.sceat.backend.business.fail.CommonFail;
 import hu.sceat.backend.business.fail.Fail;
 import hu.sceat.backend.business.id.UserId;
 import hu.sceat.backend.persistence.Validation;
 import hu.sceat.backend.persistence.entity.Allergen;
+import hu.sceat.backend.persistence.entity.Consumer;
 import hu.sceat.backend.persistence.entity.Menu;
 import hu.sceat.backend.persistence.entity.Occasion;
 import hu.sceat.backend.persistence.entity.User;
@@ -18,6 +20,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -41,6 +44,15 @@ public class MenuService {
 	}
 	
 	@Transactional
+	public Try<Collection<UserRefDto>, Fail> getPurchasers(UserId requester, Long menuId) {
+		return get(requester, menuId)
+				.map(m -> m.getPurchasers().stream()
+						.map(Consumer::getUser)
+						.map(DtoMapper.INSTANCE::toUserRef)
+						.toList());
+	}
+	
+	@Transactional
 	public Try<MenuDto, Fail> create(UserId requester, Long organizationId, String name,
 			LocalDate date, Occasion occasion, int cost, List<String> foods, Set<Allergen> allergens) {
 		return orgService.getWhereServer(requester, organizationId)
@@ -56,6 +68,8 @@ public class MenuService {
 	@Transactional
 	public Try<Unit, Fail> delete(UserId requester, Long menuId) {
 		return getWhereServer(requester, menuId)
+				.filter(m -> m.getPurchasers().isEmpty(),
+						CommonFail.invalidAction("menu has purchasers"))
 				.map(m -> {
 					menuRepo.delete(m);
 					return Unit.get();
