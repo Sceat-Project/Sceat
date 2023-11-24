@@ -7,6 +7,7 @@ import hu.sceat.backend.business.fail.CommonFail;
 import hu.sceat.backend.business.fail.Fail;
 import hu.sceat.backend.business.id.UserId;
 import hu.sceat.backend.persistence.entity.Consumer;
+import hu.sceat.backend.persistence.entity.Occasion;
 import hu.sceat.backend.persistence.entity.User;
 import hu.sceat.backend.persistence.repository.UserRepository;
 import hu.sceat.backend.util.Try;
@@ -21,9 +22,11 @@ import java.util.Collection;
 public class UserService {
 	
 	private final UserRepository userRepo;
+	private final OrganizationService orgService;
 	
-	public UserService(UserRepository userRepo) {
+	public UserService(UserRepository userRepo, OrganizationService orgService) {
 		this.userRepo = userRepo;
+		this.orgService = orgService;
 	}
 	
 	@Transactional
@@ -42,6 +45,21 @@ public class UserService {
 	public Try<UserDto, Fail> findByName(UserId requester, String name) {
 		return getBySpecification(requester, UserRepository.hasName(name), "user name " + name)
 				.map(DtoMapper.INSTANCE::toUser);
+	}
+	
+	@Transactional
+	public Try<Collection<MenuDto>, Fail> getMenu(UserId requester, Long userId, Long organizationId,
+			LocalDate date, Occasion occasion) {
+		//TODO optimize this by querying menus directly (adding the filters to the query)
+		return orgService.findById(organizationId) //make sure the organization is valid
+				.flatMap(o -> getById(requester, userId))
+				.map(u -> u.getConsumerProfile().orElseThrow())
+				.map(Consumer::getPurchasedMenus)
+				.map(menus -> menus.stream()
+						.filter(menu -> menu.getOrganization().getId().equals(organizationId))
+						.filter(menu -> menu.getDate().isEqual(date) && menu.getOccasion().equals(occasion))
+						.map(DtoMapper.INSTANCE::toMenu)
+						.toList());
 	}
 	
 	@Transactional
@@ -79,6 +97,9 @@ public class UserService {
 	
 	private Try<User, Fail> getBySpecification(UserId requester, Specification<User> spec, String failMessage) {
 		return Try.from(userRepo.findOne(spec), CommonFail.notFound(failMessage));
-				//TODO some extra filters (requester has permission to see the user)
+		//TODO some extra filters (requester has permission to see the user)
+		
+		//TODO we assume that each user is only linked to a single organization. This is true for now,
+		//  but it might change in the future.
 	}
 }

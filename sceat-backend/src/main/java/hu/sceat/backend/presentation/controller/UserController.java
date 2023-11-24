@@ -4,6 +4,7 @@ import hu.sceat.backend.business.PrincipalUser;
 import hu.sceat.backend.business.dto.MenuDto;
 import hu.sceat.backend.business.dto.UserDto;
 import hu.sceat.backend.business.service.UserService;
+import hu.sceat.backend.persistence.entity.Occasion;
 import hu.sceat.backend.presentation.util.ResponseUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,13 +44,20 @@ public class UserController {
 				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
 	}
 	
+	@GetMapping("/id/{userId}/menu")
+	public ResponseEntity<Collection<MenuDto>> getMenu(PrincipalUser principal, @PathVariable Long userId,
+			@RequestParam Long organizationId, @RequestParam LocalDate date, @RequestParam Occasion occasion) {
+		return userService.getMenu(principal, userId, organizationId, date, occasion)
+				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
+	}
+	
 	@GetMapping("/self")
 	public ResponseEntity<UserDto> self(PrincipalUser principal) {
 		return ResponseUtil.respondOk(userService.getSelf(principal));
 	}
 	
 	@GetMapping("/self/purchasedMenus")
-	public ResponseEntity<Collection<MenuDto>> selfMenus(PrincipalUser principal,
+	public ResponseEntity<Collection<MenuDto>> selfPurchasedMenus(PrincipalUser principal,
 			@RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
 		return userService.getPurchasedMenus(principal, principal.id(), startDate, endDate)
 				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
