@@ -13,7 +13,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService { //TODO this is just an example service, we might not need it
+public class UserService {
 	
 	private final UserRepository userRepo;
 	
@@ -23,16 +23,28 @@ public class UserService { //TODO this is just an example service, we might not 
 	
 	@Transactional
 	public Try<UserDto, Fail> findById(UserId requester, Long userId) {
-		return Try.<User, Fail>from(userRepo.findOne(Specification.allOf(
-						UserRepository.same(User.fromId(userId))
-						//TODO some extra filters
-				)), CommonFail.notFound("user " + userId))
-				.map(DtoMapper.INSTANCE::toUser);
+		return find(requester, UserRepository.same(User.fromId(userId)), "user " + userId);
+	}
+	
+	@Transactional
+	public Try<UserDto, Fail> findByEmail(UserId requester, String email) {
+		return find(requester, UserRepository.hasEmail(email), "user email " + email);
+	}
+	
+	@Transactional
+	public Try<UserDto, Fail> findByName(UserId requester, String name) {
+		return find(requester, UserRepository.hasName(name), "user name " + name);
 	}
 	
 	@Transactional
 	public UserDto getSelf(UserId requester) {
 		User user = userRepo.getReferenceById(requester.id());
 		return DtoMapper.INSTANCE.toUser(user);
+	}
+	
+	private Try<UserDto, Fail> find(UserId requester, Specification<User> spec, String failMessage) {
+		return Try.<User, Fail>from(userRepo.findOne(spec), CommonFail.notFound(failMessage))
+				//TODO some extra filters
+				.map(DtoMapper.INSTANCE::toUser);
 	}
 }

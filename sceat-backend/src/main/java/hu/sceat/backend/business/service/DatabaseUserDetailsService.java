@@ -25,12 +25,12 @@ public class DatabaseUserDetailsService implements UserDetailsService {
 	@Transactional
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Optional<User> user = userRepository.findByUsername(username);
+		Optional<User> user = userRepository.findByEmail(username);
 		if (user.isPresent()) {
-			logger.debug("Loaded user {} for username '{}'", user.get(), username);
+			logger.debug("Loaded user {} for email '{}'", user.get(), username);
 			return new PrincipalUser(user.get());
 		} else {
-			logger.debug("No user found by username '{}'", username);
+			logger.debug("No user found by email '{}'", username);
 			throw new UsernameNotFoundException("User not found");
 		}
 	}
