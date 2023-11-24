@@ -12,6 +12,7 @@ import hu.sceat.backend.persistence.entity.Occasion;
 import hu.sceat.backend.persistence.entity.User;
 import hu.sceat.backend.persistence.repository.MenuRepository;
 import hu.sceat.backend.util.Try;
+import hu.sceat.backend.util.Unit;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -24,19 +25,18 @@ import java.util.Set;
 public class MenuService {
 	
 	private final MenuRepository menuRepo;
+	private final UserService userService;
 	private final OrganizationService orgService;
 	
-	public MenuService(MenuRepository menuRepo, OrganizationService orgService) {
+	public MenuService(MenuRepository menuRepo, UserService userService, OrganizationService orgService) {
 		this.menuRepo = menuRepo;
+		this.userService = userService;
 		this.orgService = orgService;
 	}
 	
 	@Transactional
 	public Try<MenuDto, Fail> findById(UserId requester, Long menuId) {
-		return Try.<Menu, Fail>from(menuRepo.findOne(Specification.allOf(
-						MenuRepository.same(Menu.fromId(menuId)),
-						MenuRepository.hasSharedOrganization(User.fromId(requester.id()))
-				)), CommonFail.notFound("menu " + menuId))
+		return get(requester, menuId)
 				.map(DtoMapper.INSTANCE::toMenu);
 	}
 	
@@ -51,5 +51,32 @@ public class MenuService {
 				.map(o -> Menu.create(o, name, date, occasion, cost, foods, allergens))
 				.map(menuRepo::save)
 				.map(DtoMapper.INSTANCE::toMenu);
+	}
+	
+	@Transactional
+	public Try<Unit, Fail> delete(UserId requester, Long menuId) {
+		return getWhereServer(requester, menuId)
+				.map(m -> {
+					menuRepo.delete(m);
+					return Unit.get();
+				});
+	}
+	
+	private Try<Menu, Fail> getWhereServer(UserId requester, Long menuId) {
+		return userService.getById(requester, requester.id())
+				.filter(User::isServer, CommonFail.invalidAction("not a server"))
+				.flatMap(user -> get(user, menuId));
+	}
+	
+	private Try<Menu, Fail> get(UserId requester, Long menuId) {
+		return userService.getById(requester, requester.id())
+				.flatMap(user -> get(user, menuId));
+	}
+	
+	private Try<Menu, Fail> get(User requester, Long menuId) {
+		return Try.from(menuRepo.findOne(Specification.allOf(
+				MenuRepository.same(Menu.fromId(menuId)),
+				MenuRepository.hasSharedOrganization(requester)
+		)), CommonFail.notFound("menu " + menuId));
 	}
 }
