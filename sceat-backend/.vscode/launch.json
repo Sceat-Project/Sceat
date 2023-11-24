@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-SceatBackendApp<sceat-backend>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "hu.sceat.backend.SceatBackendApp",
+            "projectName": "sceat-backend",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
