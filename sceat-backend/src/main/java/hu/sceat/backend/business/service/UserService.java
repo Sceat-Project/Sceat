@@ -1,16 +1,21 @@
 package hu.sceat.backend.business.service;
 
 import hu.sceat.backend.business.dto.DtoMapper;
+import hu.sceat.backend.business.dto.MenuDto;
 import hu.sceat.backend.business.dto.UserDto;
 import hu.sceat.backend.business.fail.CommonFail;
 import hu.sceat.backend.business.fail.Fail;
 import hu.sceat.backend.business.id.UserId;
+import hu.sceat.backend.persistence.entity.Consumer;
 import hu.sceat.backend.persistence.entity.User;
 import hu.sceat.backend.persistence.repository.UserRepository;
 import hu.sceat.backend.util.Try;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.Collection;
 
 @Service
 public class UserService {
@@ -43,6 +48,28 @@ public class UserService {
 	public UserDto getSelf(UserId requester) {
 		User user = userRepo.getReferenceById(requester.id());
 		return DtoMapper.INSTANCE.toUser(user);
+	}
+	
+	@Transactional
+	public Try<Collection<MenuDto>, Fail> getPurchasedMenus(UserId requester, Long userId,
+			LocalDate startDate, LocalDate endDate) {
+		//TODO optimize this by querying menus directly (adding the date filter to the query)
+		return getById(requester, userId)
+				.map(u -> u.getConsumerProfile().orElseThrow())
+				.map(Consumer::getPurchasedMenus)
+				.map(menus -> menus.stream()
+						.filter(menu -> (menu.getDate().isEqual(startDate) || menu.getDate().isAfter(startDate))
+								&& menu.getDate().isBefore(endDate))
+						.map(DtoMapper.INSTANCE::toMenu)
+						.toList());
+	}
+	
+	@Transactional
+	public Try<byte[], Fail> getPhoto(UserId requester, Long userId) {
+		return getById(requester, userId)
+				.map(u -> u.getConsumerProfile().orElseThrow())
+				.map(Consumer::getPhoto)
+				.map(o -> o.orElse(null));
 	}
 	
 	@Transactional

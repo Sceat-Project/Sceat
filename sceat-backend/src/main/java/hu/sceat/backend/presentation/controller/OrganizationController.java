@@ -33,24 +33,24 @@ public class OrganizationController {
 	}
 	
 	@GetMapping("/id/{organizationId}/menus")
-	public ResponseEntity<Collection<MenuDto>> menus(PrincipalUser requester,
+	public ResponseEntity<Collection<MenuDto>> menus(PrincipalUser principal,
 			@PathVariable Long organizationId, @RequestParam LocalDate startDate,
 			@RequestParam LocalDate endDate) {
-		return orgService.listMenus(requester, organizationId, startDate, endDate)
+		return orgService.listMenus(principal, organizationId, startDate, endDate)
 				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
 	}
 	
 	@GetMapping("/id/{organizationId}/servers")
-	public ResponseEntity<Collection<UserRefDto>> servers(PrincipalUser requester,
+	public ResponseEntity<Collection<UserRefDto>> servers(PrincipalUser principal,
 			@PathVariable Long organizationId) {
-		return orgService.listServers(requester, organizationId)
+		return orgService.listServers(principal, organizationId)
 				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
 	}
 	
 	@GetMapping("/id/{organizationId}/consumers")
-	public ResponseEntity<Collection<UserRefDto>> consumers(PrincipalUser requester,
+	public ResponseEntity<Collection<UserRefDto>> consumers(PrincipalUser principal,
 			@PathVariable Long organizationId) {
-		return orgService.listConsumers(requester, organizationId)
+		return orgService.listConsumers(principal, organizationId)
 				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
 	}
 }

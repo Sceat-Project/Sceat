@@ -40,7 +40,7 @@ public class OrganizationService {
 		//TODO optimize this by querying menus directly (adding the date filter to the query)
 		return get(organizationId)
 				.map(o -> o.getMenus().stream()
-						.filter(menu -> menu.getDate().isEqual(startDate) && menu.getDate().isAfter(startDate)
+						.filter(menu -> (menu.getDate().isEqual(startDate) || menu.getDate().isAfter(startDate))
 								&& menu.getDate().isBefore(endDate))
 						.map(DtoMapper.INSTANCE::toMenu)
 						.toList());
