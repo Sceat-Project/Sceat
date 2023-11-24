@@ -34,7 +34,7 @@ public class AuthService {
 	@Transactional
 	public Try<UserDto, Fail> registerServer(String username, String password, Long organization) {
 		return Try.<String, Fail>success(username)
-				.filter(n -> n.matches(Validation.USERNAME_REGEX),
+				.filter(n -> n.matches(Validation.ID_NAME_REGEX),
 						CommonFail.invalidInputFormat("username"))
 				.filter(n -> userRepo.findByUsername(n).isEmpty(),
 						CommonFail.invalidInputAlreadyTaken("username"))
@@ -48,7 +48,7 @@ public class AuthService {
 	@Transactional
 	public Try<UserDto, Fail> registerConsumer(String username, String password, Long organization) {
 		return Try.<String, Fail>success(username)
-				.filter(n -> n.matches(Validation.USERNAME_REGEX),
+				.filter(n -> n.matches(Validation.ID_NAME_REGEX),
 						CommonFail.invalidInputFormat("username"))
 				.filter(n -> userRepo.findByUsername(n).isEmpty(),
 						CommonFail.invalidInputAlreadyTaken("username"))

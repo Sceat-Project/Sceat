@@ -18,18 +18,20 @@ import java.util.Optional;
 @Table(name = "users")
 public class User {
 	
-	public static User createServer(String username, String password, Organization organization) {
+	public static User createServer(String email, String password, String name, Organization organization) {
 		User user = new User();
-		user.username = username;
+		user.email = email;
 		user.password = password;
+		user.name = name;
 		user.serverProfile = Server.create(user, organization);
 		return user;
 	}
 	
-	public static User createConsumer(String username, String password, Organization organization) {
+	public static User createConsumer(String email, String password, String name, Organization organization) {
 		User user = new User();
-		user.username = username;
+		user.email = email;
 		user.password = password;
+		user.name = name;
 		user.consumerProfile = Consumer.create(user, organization);
 		return user;
 	}
@@ -47,12 +49,16 @@ public class User {
 	private Long id;
 	
 	@Basic(optional = false)
-	@Column(name = "username", nullable = false, unique = true)
-	private @Pattern(regexp = Validation.USERNAME_REGEX) String username;
+	@Column(name = "email", nullable = false, unique = true)
+	private @Pattern(regexp = Validation.EMAIL_REGEX) String email;
 	
 	@Basic(optional = false, fetch = FetchType.LAZY)
 	@Column(name = "password", nullable = false)
 	private String password;
+	
+	@Basic(optional = false)
+	@Column(name = "name", nullable = false)
+	private @Pattern(regexp = Validation.GENERAL_NAME_REGEX) String name;
 	
 	@OneToOne(mappedBy = "user", cascade = {CascadeType.ALL}, orphanRemoval = true)
 	private Server serverProfile;
@@ -64,12 +70,16 @@ public class User {
 		return id;
 	}
 	
-	public String getUsername() {
-		return username;
+	public String getEmail() {
+		return email;
 	}
 	
 	public String getPassword() {
 		return password;
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	public Optional<Server> getServerProfile() {
