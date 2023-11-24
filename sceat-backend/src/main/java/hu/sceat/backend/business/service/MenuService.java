@@ -43,7 +43,7 @@ public class MenuService {
 	@Transactional
 	public Try<MenuDto, Fail> create(UserId requester, Long organizationId, String name,
 			LocalDate date, Occasion occasion, int cost, List<String> foods, Set<Allergen> allergens) {
-		return orgService.resolveOrgWhereServer(requester, organizationId)
+		return orgService.getWhereServer(requester, organizationId)
 				.filter(o -> name.matches(Validation.GENERAL_NAME_REGEX),
 						CommonFail.invalidInputFormat("name"))
 				.filter(o -> cost >= 0, CommonFail.invalidInput("cost", "negative"))

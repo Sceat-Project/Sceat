@@ -1,6 +1,7 @@
 package hu.sceat.backend.presentation.controller;
 
 import hu.sceat.backend.business.PrincipalUser;
+import hu.sceat.backend.business.dto.MenuDto;
 import hu.sceat.backend.business.dto.OrganizationDto;
 import hu.sceat.backend.business.dto.UserRefDto;
 import hu.sceat.backend.business.service.OrganizationService;
@@ -9,8 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
 @RestController
@@ -29,7 +32,13 @@ public class OrganizationController {
 				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
 	}
 	
-	//TODO some way to query menus, but isn't too generic (e.g. by date)
+	@GetMapping("/id/{organizationId}/menus")
+	public ResponseEntity<Collection<MenuDto>> menus(PrincipalUser requester,
+			@PathVariable Long organizationId, @RequestParam LocalDate startDate,
+			@RequestParam LocalDate endDate) {
+		return orgService.listMenus(requester, organizationId, startDate, endDate)
+				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
+	}
 	
 	@GetMapping("/id/{organizationId}/servers")
 	public ResponseEntity<Collection<UserRefDto>> servers(PrincipalUser requester,
