@@ -26,13 +26,13 @@ public class UserController {
 				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
 	}
 	
-	@GetMapping("/find/email/{email}")
+	@GetMapping("/email/{email}")
 	public ResponseEntity<UserDto> findEmail(PrincipalUser principal, @PathVariable String email) {
 		return userService.findByEmail(principal, email)
 				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
 	}
 	
-	@GetMapping("/find/name/{name}")
+	@GetMapping("/name/{name}")
 	public ResponseEntity<UserDto> findName(PrincipalUser principal, @PathVariable String name) {
 		return userService.findByName(principal, name)
 				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);

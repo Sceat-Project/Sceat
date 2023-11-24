@@ -52,6 +52,6 @@ public class UserService {
 	
 	private Try<User, Fail> getBySpecification(UserId requester, Specification<User> spec, String failMessage) {
 		return Try.from(userRepo.findOne(spec), CommonFail.notFound(failMessage));
-				//TODO some extra filters
+				//TODO some extra filters (requester has permission to see the user)
 	}
 }

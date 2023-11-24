@@ -31,7 +31,7 @@ public class ConsumerController {
 				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
 	}
 	
-	@PostMapping("/allergies")
+	@PostMapping("/self/allergies")
 	public ResponseEntity<ConsumerDto> allergies(PrincipalUser principal, @RequestParam Set<Allergen> allergies) {
 		return consumerService.setAllergies(principal, allergies)
 				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
