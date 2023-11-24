@@ -61,4 +61,11 @@ public class ConsumerController {
 		return consumerService.setAllergies(principal, allergies)
 				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
 	}
+	
+	@PostMapping("/self/photo")
+	public ResponseEntity<ConsumerDto> postSelfPhoto(PrincipalUser principal,
+			@RequestParam byte[] photo) {
+		return consumerService.setPhoto(principal, photo)
+				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
+	}
 }

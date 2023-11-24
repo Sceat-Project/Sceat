@@ -83,7 +83,16 @@ public class ConsumerService {
 				.map(DtoMapper.INSTANCE::toConsumer);
 	}
 	
-	//TODO method to modify photo (if it's mentioned in the MVP)
+	@Transactional
+	public Try<ConsumerDto, Fail> setPhoto(UserId requester, byte[] photo) {
+		return getSelf(requester)
+				.map(c -> {
+					c.setPhoto(photo);
+					userRepo.save(c.getUser()); //TODO does this work?
+					return c;
+				})
+				.map(DtoMapper.INSTANCE::toConsumer);
+	}
 	
 	private Try<Consumer, Fail> get(UserId requester, Long userId) {
 		return userService.getById(requester, userId)
