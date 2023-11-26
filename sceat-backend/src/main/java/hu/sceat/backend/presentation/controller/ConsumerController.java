@@ -7,6 +7,7 @@ import hu.sceat.backend.business.service.ConsumerService;
 import hu.sceat.backend.persistence.entity.Allergen;
 import hu.sceat.backend.persistence.entity.Occasion;
 import hu.sceat.backend.presentation.util.ResponseUtil;
+import hu.sceat.backend.util.Unit;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -66,6 +67,20 @@ public class ConsumerController {
 	public ResponseEntity<ConsumerDto> postSelfPhoto(PrincipalUser principal,
 			@RequestParam byte[] photo) {
 		return consumerService.setPhoto(principal, photo)
+				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
+	}
+	
+	@PostMapping("/self/menu/{menuId}/purchase")
+	public ResponseEntity<Unit> postMenuPurchase(PrincipalUser principal,
+			@PathVariable Long menuId) {
+		return consumerService.addPurchasedMenu(principal, menuId)
+				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
+	}
+	
+	@PostMapping("/self/menu/{menuId}/cancel")
+	public ResponseEntity<Unit> postMenuCancel(PrincipalUser principal,
+			@PathVariable Long menuId) {
+		return consumerService.removePurchasedMenu(principal, menuId)
 				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
 	}
 }

@@ -37,6 +37,10 @@ public class MenuService {
 		this.orgService = orgService;
 	}
 	
+	public boolean isPurchasable(Menu menu) {
+		return menu.getDate().isAfter(LocalDate.now());
+	}
+	
 	@Transactional
 	public Try<MenuDto, Fail> findById(UserId requester, Long menuId) {
 		return get(requester, menuId)
@@ -82,7 +86,7 @@ public class MenuService {
 				.flatMap(user -> get(user, menuId));
 	}
 	
-	private Try<Menu, Fail> get(UserId requester, Long menuId) {
+	Try<Menu, Fail> get(UserId requester, Long menuId) {
 		return userService.getById(requester, requester.id())
 				.flatMap(user -> get(user, menuId));
 	}

@@ -95,6 +95,16 @@ public class Consumer {
 		this.allergies = EnumSet.copyOf(allergies);
 	}
 	
+	public void addPurchasedMenu(Menu menu) {
+		if (purchasedMenus.contains(menu)) throw new IllegalArgumentException("Menu already purchased");
+		purchasedMenus.add(menu);
+	}
+	
+	public void removePurchasedMenu(Menu menu) {
+		if (!purchasedMenus.contains(menu)) throw new IllegalArgumentException("Menu already purchased");
+		purchasedMenus.remove(menu);
+	}
+	
 	public void setPhoto(byte[] photo) {
 		this.photo = Arrays.copyOf(photo, photo.length);
 	}

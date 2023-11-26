@@ -12,7 +12,9 @@ import hu.sceat.backend.persistence.entity.Occasion;
 import hu.sceat.backend.persistence.entity.User;
 import hu.sceat.backend.persistence.repository.UserRepository;
 import hu.sceat.backend.util.Try;
+import hu.sceat.backend.util.Unit;
 import jakarta.transaction.Transactional;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -25,11 +27,14 @@ public class ConsumerService {
 	private final UserRepository userRepo;
 	private final UserService userService;
 	private final OrganizationService orgService;
+	private final MenuService menuService;
 	
-	public ConsumerService(UserRepository userRepo, UserService userService, OrganizationService orgService) {
+	public ConsumerService(UserRepository userRepo, UserService userService, OrganizationService orgService,
+			MenuService menuService) {
 		this.userRepo = userRepo;
 		this.userService = userService;
 		this.orgService = orgService;
+		this.menuService = menuService;
 	}
 	
 	@Transactional
@@ -92,6 +97,38 @@ public class ConsumerService {
 					return c;
 				})
 				.map(DtoMapper.INSTANCE::toConsumer);
+	}
+	
+	@Transactional
+	public Try<Unit, Fail> addPurchasedMenu(UserId requester, Long menuId) {
+		return getSelf(requester)
+				.flatMap(c -> menuService.get(requester, menuId).map(m -> Pair.of(c, m)))
+				.filter(p -> !p.getSecond().getPurchasers().contains(p.getFirst()),
+						CommonFail.invalidAction("menu already purchased"))
+				.filter(p -> menuService.isPurchasable(p.getSecond()),
+						CommonFail.invalidAction("menu not purchasable"))
+				.map(p -> {
+					Consumer c = p.getFirst();
+					c.addPurchasedMenu(p.getSecond());
+					userRepo.save(c.getUser());
+					return Unit.get();
+				});
+	}
+	
+	@Transactional
+	public Try<Unit, Fail> removePurchasedMenu(UserId requester, Long menuId) {
+		return getSelf(requester)
+				.flatMap(c -> menuService.get(requester, menuId).map(m -> Pair.of(c, m)))
+				.filter(p -> p.getSecond().getPurchasers().contains(p.getFirst()),
+						CommonFail.invalidAction("menu not purchased"))
+				.filter(p -> menuService.isPurchasable(p.getSecond()),
+						CommonFail.invalidAction("menu not purchasable"))
+				.map(p -> {
+					Consumer c = p.getFirst();
+					c.removePurchasedMenu(p.getSecond());
+					userRepo.save(c.getUser());
+					return Unit.get();
+				});
 	}
 	
 	private Try<Consumer, Fail> get(UserId requester, Long userId) {
