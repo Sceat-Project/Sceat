@@ -38,7 +38,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 						}))
 				.formLogin(x -> {
 					x.loginProcessingUrl("/api/auth/login");
-					x.usernameParameter("username");
+					x.usernameParameter("email");
 					x.passwordParameter("password");
 					x.permitAll();
 					x.successHandler((request, response, authentication) -> HttpUtil.respondOk(response));

@@ -54,7 +54,7 @@ public class AuthService {
 	
 	private Try<Unit, Fail> registrationValidateDetails(String email, String password, String name) {
 		return Try.<Unit, Fail>success(Unit.get())
-				.filter(u -> email.matches(Validation.ID_NAME_REGEX),
+				.filter(u -> email.matches(Validation.EMAIL_REGEX),
 						CommonFail.invalidInputFormat("email"))
 				.filter(u -> name.matches(Validation.GENERAL_NAME_REGEX),
 						CommonFail.invalidInputFormat("name"))
