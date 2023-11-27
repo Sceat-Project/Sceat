@@ -17,6 +17,7 @@ public interface DtoMapper {
 	
 	OrganizationDto toOrganization(Organization organization);
 	UserDto toUser(User user);
+	UserRefDto toUserRef(User user);
 	ServerDto toServer(Server server);
 	ConsumerDto toConsumer(Consumer consumer);
 	MenuDto toMenu(Menu menu);

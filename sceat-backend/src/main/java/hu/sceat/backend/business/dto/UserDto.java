@@ -4,5 +4,5 @@ import hu.sceat.backend.business.id.UserId;
 
 import java.util.Optional;
 
-public record UserDto(Long id, String username, Optional<ServerDto> serverProfile,
+public record UserDto(Long id, String email, String name, Optional<ServerDto> serverProfile,
 		Optional<ConsumerDto> consumerProfile) implements UserId {}

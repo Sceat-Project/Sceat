@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/user")
-public class UserController { //TODO this is just an example controller, we might not need it
+public class UserController {
 	
 	private final UserService userService;
 	
@@ -26,8 +26,20 @@ public class UserController { //TODO this is just an example controller, we migh
 				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
 	}
 	
+	@GetMapping("/email/{email}")
+	public ResponseEntity<UserDto> getByEmail(PrincipalUser principal, @PathVariable String email) {
+		return userService.findByEmail(principal, email)
+				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
+	}
+	
+	@GetMapping("/name/{name}")
+	public ResponseEntity<UserDto> getByName(PrincipalUser principal, @PathVariable String name) {
+		return userService.findByName(principal, name)
+				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
+	}
+	
 	@GetMapping("/self")
-	public ResponseEntity<UserDto> self(PrincipalUser principal) {
+	public ResponseEntity<UserDto> getSelf(PrincipalUser principal) {
 		return ResponseUtil.respondOk(userService.getSelf(principal));
 	}
 }

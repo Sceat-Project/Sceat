@@ -1,6 +1,7 @@
 package hu.sceat.backend.persistence.repository;
 
 import hu.sceat.backend.persistence.entity.User;
+import hu.sceat.backend.persistence.entity.User_;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -13,5 +14,13 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 		return (root, query, cb) -> cb.equal(root, other);
 	}
 	
-	Optional<User> findByUsername(String username);
+	static Specification<User> hasEmail(String email) {
+		return (root, query, cb) -> cb.equal(root.get(User_.EMAIL), email);
+	}
+	
+	static Specification<User> hasName(String name) {
+		return (root, query, cb) -> cb.equal(root.get(User_.NAME), name);
+	}
+	
+	Optional<User> findByEmail(String email);
 }

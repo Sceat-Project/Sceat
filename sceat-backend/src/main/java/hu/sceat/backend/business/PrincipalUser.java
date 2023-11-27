@@ -15,7 +15,7 @@ public final class PrincipalUser implements UserDetails, UserId {
 	
 	public PrincipalUser(User user) {
 		this.id = user.getId();
-		this.username = user.getUsername();
+		this.username = user.getEmail();
 		this.password = user.getPassword();
 	}
 	

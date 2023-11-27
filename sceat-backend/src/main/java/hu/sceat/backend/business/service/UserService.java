@@ -13,7 +13,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService { //TODO this is just an example service, we might not need it
+public class UserService {
 	
 	private final UserRepository userRepo;
 	
@@ -23,10 +23,19 @@ public class UserService { //TODO this is just an example service, we might not 
 	
 	@Transactional
 	public Try<UserDto, Fail> findById(UserId requester, Long userId) {
-		return Try.<User, Fail>from(userRepo.findOne(Specification.allOf(
-						UserRepository.same(User.fromId(userId))
-						//TODO some extra filters
-				)), CommonFail.notFound("user " + userId))
+		return getById(requester, userId)
+				.map(DtoMapper.INSTANCE::toUser);
+	}
+	
+	@Transactional
+	public Try<UserDto, Fail> findByEmail(UserId requester, String email) {
+		return getBySpecification(requester, UserRepository.hasEmail(email), "user email " + email)
+				.map(DtoMapper.INSTANCE::toUser);
+	}
+	
+	@Transactional
+	public Try<UserDto, Fail> findByName(UserId requester, String name) {
+		return getBySpecification(requester, UserRepository.hasName(name), "user name " + name)
 				.map(DtoMapper.INSTANCE::toUser);
 	}
 	
@@ -34,5 +43,18 @@ public class UserService { //TODO this is just an example service, we might not 
 	public UserDto getSelf(UserId requester) {
 		User user = userRepo.getReferenceById(requester.id());
 		return DtoMapper.INSTANCE.toUser(user);
+	}
+	
+	@Transactional
+	Try<User, Fail> getById(UserId requester, Long userId) {
+		return getBySpecification(requester, UserRepository.same(User.fromId(userId)), "user " + userId);
+	}
+	
+	private Try<User, Fail> getBySpecification(UserId requester, Specification<User> spec, String failMessage) {
+		return Try.from(userRepo.findOne(spec), CommonFail.notFound(failMessage));
+		//TODO some extra filters (requester has permission to see the user)
+		
+		//TODO we assume that each user is only linked to a single organization. This is true for now,
+		//  but it might change in the future.
 	}
 }
