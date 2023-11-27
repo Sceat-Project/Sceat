@@ -1,5 +1,6 @@
 package hu.sceat.backend.presentation.controller;
 
+import hu.sceat.backend.business.PrincipalUser;
 import hu.sceat.backend.business.service.AuthService;
 import hu.sceat.backend.presentation.util.ResponseUtil;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,12 @@ public class AuthController {
 	public ResponseEntity<Void> registerConsumer(@RequestParam String email, @RequestParam String password,
 			@RequestParam String name, @RequestParam Long organization) {
 		return authService.registerConsumer(email, password, name, organization)
+				.get(u -> ResponseUtil.respondOk(), ResponseUtil::respondFail);
+	}
+	
+	@PostMapping("/password")
+	public ResponseEntity<Void> postPassword(PrincipalUser principal, @RequestParam String password) {
+		return authService.setPassword(principal, password)
 				.get(u -> ResponseUtil.respondOk(), ResponseUtil::respondFail);
 	}
 }

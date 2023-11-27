@@ -4,6 +4,7 @@ import hu.sceat.backend.business.dto.DtoMapper;
 import hu.sceat.backend.business.dto.UserDto;
 import hu.sceat.backend.business.fail.CommonFail;
 import hu.sceat.backend.business.fail.Fail;
+import hu.sceat.backend.business.id.UserId;
 import hu.sceat.backend.persistence.Validation;
 import hu.sceat.backend.persistence.entity.User;
 import hu.sceat.backend.persistence.repository.OrganizationRepository;
@@ -50,6 +51,18 @@ public class AuthService {
 				.map(o -> User.createConsumer(email, passwordEncoder.encode(password), name, o))
 				.map(userRepo::save)
 				.map(DtoMapper.INSTANCE::toUser);
+	}
+	
+	@Transactional
+	public Try<Unit, Fail> setPassword(UserId requester, String password) {
+		return Try.<User, Fail>success(userRepo.getReferenceById(requester.id()))
+				.filter(u -> password.matches(Validation.PASSWORD_REGEX),
+						CommonFail.invalidInputFormat("password"))
+				.map(user -> {
+					user.setPassword(passwordEncoder.encode(password));
+					userRepo.save(user);
+					return Unit.get();
+				});
 	}
 	
 	private Try<Unit, Fail> registrationValidateDetails(String email, String password, String name) {
