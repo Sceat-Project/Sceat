@@ -54,7 +54,7 @@ public class User {
 	
 	@Basic(optional = false, fetch = FetchType.LAZY)
 	@Column(name = "password", nullable = false)
-	private String password;
+	private @Pattern(regexp = Validation.PASSWORD_REGEX) String password;
 	
 	@Basic(optional = false)
 	@Column(name = "name", nullable = false)
@@ -65,6 +65,10 @@ public class User {
 	
 	@OneToOne(mappedBy = "user", cascade = {CascadeType.ALL}, orphanRemoval = true)
 	private Consumer consumerProfile;
+	
+	@Basic(optional = false)
+	@Column(name = "first_login_flag", nullable = false)
+	private boolean firstLoginFlag;
 	
 	public Long getId() {
 		return id;
@@ -96,5 +100,17 @@ public class User {
 	
 	public boolean isConsumer() {
 		return consumerProfile != null;
+	}
+	
+	public boolean getFirstLoginFlag() {
+		return firstLoginFlag;
+	}
+	
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	public void clearFirstLoginFlag() {
+		this.firstLoginFlag = false;
 	}
 }

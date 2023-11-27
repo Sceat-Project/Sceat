@@ -56,6 +56,8 @@ public class AuthService {
 		return Try.<Unit, Fail>success(Unit.get())
 				.filter(u -> email.matches(Validation.EMAIL_REGEX),
 						CommonFail.invalidInputFormat("email"))
+				.filter(u -> password.matches(Validation.PASSWORD_REGEX),
+						CommonFail.invalidInputFormat("password"))
 				.filter(u -> name.matches(Validation.GENERAL_NAME_REGEX),
 						CommonFail.invalidInputFormat("name"))
 				.filter(u -> userRepo.findByEmail(email).isEmpty(),

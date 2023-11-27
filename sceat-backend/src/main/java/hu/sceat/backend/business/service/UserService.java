@@ -5,9 +5,11 @@ import hu.sceat.backend.business.dto.UserDto;
 import hu.sceat.backend.business.fail.CommonFail;
 import hu.sceat.backend.business.fail.Fail;
 import hu.sceat.backend.business.id.UserId;
+import hu.sceat.backend.persistence.Validation;
 import hu.sceat.backend.persistence.entity.User;
 import hu.sceat.backend.persistence.repository.UserRepository;
 import hu.sceat.backend.util.Try;
+import hu.sceat.backend.util.Unit;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -43,6 +45,30 @@ public class UserService {
 	public UserDto getSelf(UserId requester) {
 		User user = userRepo.getReferenceById(requester.id());
 		return DtoMapper.INSTANCE.toUser(user);
+	}
+	
+	@Transactional
+	public boolean getFirstLoginFlag(UserId requester) {
+		return userRepo.getReferenceById(requester.id()).getFirstLoginFlag();
+	}
+	
+	@Transactional
+	public Try<Unit, Fail> setPassword(UserId requester, String password) {
+		return Try.<User, Fail>success(userRepo.getReferenceById(requester.id()))
+				.filter(u -> password.matches(Validation.PASSWORD_REGEX),
+						CommonFail.invalidInputFormat("password"))
+				.map(user -> {
+					user.setPassword(password);
+					userRepo.save(user);
+					return Unit.get();
+				});
+	}
+	
+	@Transactional
+	public void clearFirstLoginFlag(UserId requester) {
+		User user = userRepo.getReferenceById(requester.id());
+		user.clearFirstLoginFlag();
+		userRepo.save(user);
 	}
 	
 	@Transactional
