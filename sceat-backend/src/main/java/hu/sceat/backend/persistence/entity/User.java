@@ -19,20 +19,23 @@ import java.util.Optional;
 public class User {
 	
 	public static User createServer(String email, String password, String name, Organization organization) {
-		User user = new User();
-		user.email = email;
-		user.password = password;
-		user.name = name;
+		User user = createPartial(email, password, name);
 		user.serverProfile = Server.create(user, organization);
 		return user;
 	}
 	
 	public static User createConsumer(String email, String password, String name, Organization organization) {
+		User user = createPartial(email, password, name);
+		user.consumerProfile = Consumer.create(user, organization);
+		return user;
+	}
+	
+	private static User createPartial(String email, String password, String name) {
 		User user = new User();
 		user.email = email;
 		user.password = password;
 		user.name = name;
-		user.consumerProfile = Consumer.create(user, organization);
+		user.firstLoginFlag = true;
 		return user;
 	}
 	
