@@ -16,6 +16,7 @@ public interface DtoMapper {
 	DtoMapper INSTANCE = Mappers.getMapper(DtoMapper.class);
 	
 	OrganizationDto toOrganization(Organization organization);
+	OrganizationRefDto toOrganizationRef(Organization organization);
 	UserDto toUser(User user);
 	UserRefDto toUserRef(User user);
 	ServerDto toServer(Server server);

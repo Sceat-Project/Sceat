@@ -8,10 +8,14 @@ package hu.sceat.backend.util;
 public final class Unit {
 	private Unit() {}
 	
-	@SuppressWarnings("InstantiationOfUtilityClass")
 	private static final Unit INSTANCE = new Unit();
 	
 	public static Unit get() {
 		return INSTANCE;
+	}
+	
+	@Override
+	public String toString() {
+		return getClass().getName();
 	}
 }

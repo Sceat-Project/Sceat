@@ -34,20 +34,20 @@ public class AuthService {
 	//logout is handled by Spring Security
 	
 	@Transactional
-	public Try<UserDto, Fail> registerServer(String email, String password, String name, Long organization) {
+	public Try<UserDto, Fail> registerServer(String email, String password, String name, Long organizationId) {
 		return registrationValidateDetails(email, password, name)
-				.flatMap(n -> organizationRepo.findById(organization),
-						CommonFail.notFound("organization " + organization))
+				.flatMap(n -> organizationRepo.findById(organizationId),
+						CommonFail.notFound("organization " + organizationId))
 				.map(o -> User.createServer(email, passwordEncoder.encode(password), name, o))
 				.map(userRepo::save)
 				.map(DtoMapper.INSTANCE::toUser);
 	}
 	
 	@Transactional
-	public Try<UserDto, Fail> registerConsumer(String email, String password, String name, Long organization) {
+	public Try<UserDto, Fail> registerConsumer(String email, String password, String name, Long organizationId) {
 		return registrationValidateDetails(email, password, name)
-				.flatMap(n -> organizationRepo.findById(organization),
-						CommonFail.notFound("organization " + organization))
+				.flatMap(n -> organizationRepo.findById(organizationId),
+						CommonFail.notFound("organization " + organizationId))
 				.map(o -> User.createConsumer(email, passwordEncoder.encode(password), name, o))
 				.map(userRepo::save)
 				.map(DtoMapper.INSTANCE::toUser);
