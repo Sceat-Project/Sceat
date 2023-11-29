@@ -101,7 +101,7 @@ public class OrganizationService {
 		return getWhereMember(requester, organizationId)
 				.filter(org -> org.getServers().stream()
 								.anyMatch(server -> server.getUser().getId().equals(requester.getId())),
-						CommonFail.forbidden("organization " + organizationId));
+						CommonFail.forbidden("not a server"));
 	}
 	
 	@Transactional

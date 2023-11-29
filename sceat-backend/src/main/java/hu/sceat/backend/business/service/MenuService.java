@@ -64,6 +64,11 @@ public class MenuService {
 						CommonFail.invalidInputFormat("name"))
 				.filter(o -> cost >= 0, CommonFail.invalidInput("cost", "negative"))
 				.filter(o -> !foods.isEmpty(), CommonFail.invalidInput("foods", "empty"))
+				.filter(o -> menuRepo.findOne(Specification.allOf(
+						MenuRepository.hasName(name),
+						MenuRepository.hasDate(date),
+						MenuRepository.hasOccasion(occasion)
+				)).isEmpty(), CommonFail.invalidInputAlreadyTaken("name-date-occasion triplet"))
 				.map(o -> Menu.create(o, name, date, occasion, cost, foods, allergens))
 				.map(menuRepo::save)
 				.map(DtoMapper.INSTANCE::toMenu);

@@ -41,6 +41,10 @@ public interface MenuRepository extends JpaRepository<Menu, Long>, JpaSpecificat
 		);
 	}
 	
+	static Specification<Menu> hasName(String name) {
+		return (root, query, cb) -> cb.equal(root.get(Menu_.name), name);
+	}
+	
 	static Specification<Menu> hasDate(LocalDate date) {
 		return (root, query, cb) -> cb.equal(root.get(Menu_.date), date);
 	}
