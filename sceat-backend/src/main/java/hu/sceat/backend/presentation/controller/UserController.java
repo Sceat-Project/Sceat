@@ -7,6 +7,7 @@ import hu.sceat.backend.presentation.util.ResponseUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,5 +42,16 @@ public class UserController {
 	@GetMapping("/self")
 	public ResponseEntity<UserDto> getSelf(PrincipalUser principal) {
 		return ResponseUtil.respondOk(userService.getSelf(principal));
+	}
+	
+	@GetMapping("/self/firstLoginFlag")
+	public ResponseEntity<Boolean> getFirstLoginFlag(PrincipalUser principal) {
+		return ResponseUtil.respondOk(userService.getFirstLoginFlag(principal));
+	}
+	
+	@PostMapping("/self/clearFirstLoginFlag")
+	public ResponseEntity<Void> postClearFirstLoginFlag(PrincipalUser principal) {
+		userService.clearFirstLoginFlag(principal);
+		return ResponseUtil.respondOk();
 	}
 }

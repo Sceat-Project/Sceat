@@ -46,15 +46,32 @@ public class UserService {
 	}
 	
 	@Transactional
+	public boolean getFirstLoginFlag(UserId requester) {
+		return userRepo.getReferenceById(requester.id()).getFirstLoginFlag();
+	}
+	
+	@Transactional
+	public void clearFirstLoginFlag(UserId requester) {
+		User user = userRepo.getReferenceById(requester.id());
+		user.clearFirstLoginFlag();
+		userRepo.save(user);
+	}
+	
+	@Transactional
 	Try<User, Fail> getById(UserId requester, Long userId) {
 		return getBySpecification(requester, UserRepository.same(User.fromId(userId)), "user " + userId);
 	}
 	
 	private Try<User, Fail> getBySpecification(UserId requester, Specification<User> spec, String failMessage) {
-		return Try.from(userRepo.findOne(spec), CommonFail.notFound(failMessage));
-		//TODO some extra filters (requester has permission to see the user)
-		
-		//TODO we assume that each user is only linked to a single organization. This is true for now,
-		//  but it might change in the future.
+		User requesterUser = userRepo.getReferenceById(requester.id());
+		return Try.<User, Fail>from(userRepo.findOne(spec), CommonFail.notFound(failMessage))
+				.filter(u -> {
+					if (requester.id().equals(u.getId())) return true;
+					if (requesterUser.isConsumer()) return false;
+					Long requesterOrg = requesterUser.getServerProfile().orElseThrow().getOrganization().getId();
+					Long userOrg = u.isServer() ? u.getServerProfile().orElseThrow().getOrganization().getId()
+							: u.getConsumerProfile().orElseThrow().getOrganization().getId();
+					return requesterOrg.equals(userOrg);
+				}, CommonFail.notFound(failMessage));
 	}
 }

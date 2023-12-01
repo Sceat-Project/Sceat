@@ -19,20 +19,23 @@ import java.util.Optional;
 public class User {
 	
 	public static User createServer(String email, String password, String name, Organization organization) {
-		User user = new User();
-		user.email = email;
-		user.password = password;
-		user.name = name;
+		User user = createPartial(email, password, name);
 		user.serverProfile = Server.create(user, organization);
 		return user;
 	}
 	
 	public static User createConsumer(String email, String password, String name, Organization organization) {
+		User user = createPartial(email, password, name);
+		user.consumerProfile = Consumer.create(user, organization);
+		return user;
+	}
+	
+	private static User createPartial(String email, String password, String name) {
 		User user = new User();
 		user.email = email;
 		user.password = password;
 		user.name = name;
-		user.consumerProfile = Consumer.create(user, organization);
+		user.firstLoginFlag = true;
 		return user;
 	}
 	
@@ -54,7 +57,7 @@ public class User {
 	
 	@Basic(optional = false, fetch = FetchType.LAZY)
 	@Column(name = "password", nullable = false)
-	private String password;
+	private @Pattern(regexp = Validation.PASSWORD_REGEX) String password;
 	
 	@Basic(optional = false)
 	@Column(name = "name", nullable = false)
@@ -65,6 +68,10 @@ public class User {
 	
 	@OneToOne(mappedBy = "user", cascade = {CascadeType.ALL}, orphanRemoval = true)
 	private Consumer consumerProfile;
+	
+	@Basic(optional = false)
+	@Column(name = "first_login_flag", nullable = false)
+	private boolean firstLoginFlag;
 	
 	public Long getId() {
 		return id;
@@ -96,5 +103,17 @@ public class User {
 	
 	public boolean isConsumer() {
 		return consumerProfile != null;
+	}
+	
+	public boolean getFirstLoginFlag() {
+		return firstLoginFlag;
+	}
+	
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	public void clearFirstLoginFlag() {
+		this.firstLoginFlag = false;
 	}
 }

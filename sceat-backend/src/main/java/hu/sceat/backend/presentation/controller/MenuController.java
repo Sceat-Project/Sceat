@@ -7,7 +7,6 @@ import hu.sceat.backend.business.service.MenuService;
 import hu.sceat.backend.persistence.entity.Allergen;
 import hu.sceat.backend.persistence.entity.Occasion;
 import hu.sceat.backend.presentation.util.ResponseUtil;
-import hu.sceat.backend.util.Unit;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,9 +44,9 @@ public class MenuController {
 	}
 	
 	@PostMapping("/id/{menuId}/delete")
-	public ResponseEntity<Unit> postDelete(PrincipalUser principal, @PathVariable Long menuId) {
+	public ResponseEntity<Void> postDelete(PrincipalUser principal, @PathVariable Long menuId) {
 		return menuService.delete(principal, menuId)
-				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
+				.get(u -> ResponseUtil.respondOk(), ResponseUtil::respondFail);
 	}
 	
 	@PostMapping("/create")

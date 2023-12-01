@@ -14,5 +14,6 @@ public enum Allergen {
 	MOLLUSCS,
 	SOYA,
 	SULPHITES,
-	LUPIN
+	LUPIN,
+	MEAT
 }
