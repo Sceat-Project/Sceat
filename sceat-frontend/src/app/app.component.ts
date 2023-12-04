@@ -7,4 +7,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'sceat-frontend';
+  variable = 1+5;
 }
