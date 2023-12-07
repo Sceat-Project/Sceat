@@ -10,6 +10,12 @@
 /node_modules
 npm-debug.log
 yarn-error.log
+angular.json
+package.json
+package-lock.json
+tsconfig.app.json
+tsconfig.json
+tsconfig.spec.json
 
 # IDEs and editors
 .idea/
@@ -19,6 +25,7 @@ yarn-error.log
 *.launch
 .settings/
 *.sublime-workspace
+.editorconfig
 
 # Visual Studio Code
 .vscode/*
