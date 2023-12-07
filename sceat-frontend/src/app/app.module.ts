@@ -10,6 +10,7 @@ import { PictureHolderComponent } from './kitchen/picture-holder/picture-holder.
 import { DescriptionComponent } from './kitchen/description/description.component';
 import { InfoHolderComponent } from './kitchen/info-holder/info-holder.component';
 import { MatCardModule } from "@angular/material/card";
+import { MatButtonModule} from "@angular/material/button";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -23,10 +24,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     InfoHolderComponent,
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule,
+      BrowserModule,
+      AppRoutingModule,
       BrowserAnimationsModule,
-      MatCardModule
+      MatCardModule,
+      MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

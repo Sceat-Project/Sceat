@@ -1,7 +1,23 @@
 <header>
-    {{variable}}
+    <div class="logo">
+        <img src="your-logo.png" alt="Logo">
+    </div>
+
+    <nav>
+        <button routerLink="kitchen" mat-raised-button>
+            Kitchen
+        </button>
+        <button routerLink="admin" mat-raised-button>
+            School Admin
+        </button>
+        <button routerLink="statistics" mat-raised-button>
+            Statistics
+        </button>
+    </nav>
 </header>
-<router-outlet></router-outlet>
+<div id="content-body">
+    <router-outlet></router-outlet>
+</div>
 <footer>
 
 </footer>
