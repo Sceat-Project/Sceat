@@ -13,6 +13,7 @@ import hu.sceat.backend.persistence.entity.Consumer;
 import hu.sceat.backend.persistence.entity.Organization;
 import hu.sceat.backend.persistence.entity.Server;
 import hu.sceat.backend.persistence.repository.OrganizationRepository;
+import hu.sceat.backend.persistence.repository.UserRepository;
 import hu.sceat.backend.util.Try;
 import hu.sceat.backend.util.Unit;
 import jakarta.transaction.Transactional;
@@ -26,9 +27,11 @@ import java.util.stream.Stream;
 public class OrganizationService {
 	
 	private final OrganizationRepository orgRepo;
+	private final UserRepository userRepo;
 	
-	public OrganizationService(OrganizationRepository orgRepo) {
+	public OrganizationService(OrganizationRepository orgRepo, UserRepository userRepo) {
 		this.orgRepo = orgRepo;
+		this.userRepo = userRepo;
 	}
 	
 	@Transactional
@@ -91,6 +94,8 @@ public class OrganizationService {
 		return get(id)
 				//TODO are any extra checks needed?
 				.map(org -> {
+					org.getServers().forEach(server -> userRepo.delete(server.getUser()));
+					org.getConsumers().forEach(consumer -> userRepo.delete(consumer.getUser()));
 					orgRepo.delete(org);
 					return Unit.get();
 				});
