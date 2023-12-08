@@ -24,7 +24,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 		return http
 				.authorizeHttpRequests(x -> x
 						.requestMatchers(antMatcher("/api/auth/csrf")).permitAll()
-						.requestMatchers(antMatcher("/api/auth/register")).permitAll()
+						.requestMatchers(antMatcher("/api/auth/register/consumer")).permitAll()
 						.anyRequest().authenticated())
 				.exceptionHandling(x -> x
 						.authenticationEntryPoint((request, response, exception) -> HttpUtil

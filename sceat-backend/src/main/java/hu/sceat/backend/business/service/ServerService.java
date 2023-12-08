@@ -7,7 +7,6 @@ import hu.sceat.backend.business.fail.Fail;
 import hu.sceat.backend.business.id.UserId;
 import hu.sceat.backend.persistence.entity.Server;
 import hu.sceat.backend.persistence.entity.User;
-import hu.sceat.backend.persistence.repository.UserRepository;
 import hu.sceat.backend.util.Try;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -15,11 +14,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class ServerService {
 	
-	private final UserRepository userRepo;
 	private final UserService userService;
 	
-	public ServerService(UserRepository userRepo, UserService userService) {
-		this.userRepo = userRepo;
+	public ServerService(UserService userService) {
 		this.userService = userService;
 	}
 	
@@ -33,9 +30,5 @@ public class ServerService {
 		return userService.getById(requester, userId)
 				.filter(User::isServer, CommonFail.invalidAction("not a server"))
 				.map(u -> u.getServerProfile().orElseThrow());
-	}
-	
-	private Try<Server, Fail> getSelf(UserId requester) {
-		return get(requester, requester.id());
 	}
 }

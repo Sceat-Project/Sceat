@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collection;
+
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -34,7 +36,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/name/{name}")
-	public ResponseEntity<UserDto> getByName(PrincipalUser principal, @PathVariable String name) {
+	public ResponseEntity<Collection<UserDto>> getByName(PrincipalUser principal, @PathVariable String name) {
 		return userService.findByName(principal, name)
 				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
 	}

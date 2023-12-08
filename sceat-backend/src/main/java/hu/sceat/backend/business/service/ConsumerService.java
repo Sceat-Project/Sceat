@@ -47,7 +47,7 @@ public class ConsumerService {
 	public Try<byte[], Fail> getPhoto(UserId requester, Long userId) {
 		return get(requester, userId)
 				.map(Consumer::getPhoto)
-				.map(o -> o.orElse(null));
+				.map(o -> o.orElseGet(() -> new byte[0]));
 	}
 	
 	@Transactional
