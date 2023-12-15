@@ -12,6 +12,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+
 @Service
 public class UserService {
 	
@@ -34,9 +36,12 @@ public class UserService {
 	}
 	
 	@Transactional
-	public Try<UserDto, Fail> findByName(UserId requester, String name) {
-		return getBySpecification(requester, UserRepository.hasName(name), "user name " + name)
-				.map(DtoMapper.INSTANCE::toUser);
+	public Try<Collection<UserDto>, Fail> findByName(UserId requester, String name) {
+		User requesterUser = userRepo.getReferenceById(requester.id());
+		return Try.success(userRepo.findAll(UserRepository.hasName(name)).stream()
+				.filter(u -> hasPermissionToSee(requesterUser, u))
+				.map(DtoMapper.INSTANCE::toUser)
+				.toList());
 	}
 	
 	@Transactional
@@ -65,13 +70,15 @@ public class UserService {
 	private Try<User, Fail> getBySpecification(UserId requester, Specification<User> spec, String failMessage) {
 		User requesterUser = userRepo.getReferenceById(requester.id());
 		return Try.<User, Fail>from(userRepo.findOne(spec), CommonFail.notFound(failMessage))
-				.filter(u -> {
-					if (requester.id().equals(u.getId())) return true;
-					if (requesterUser.isConsumer()) return false;
-					Long requesterOrg = requesterUser.getServerProfile().orElseThrow().getOrganization().getId();
-					Long userOrg = u.isServer() ? u.getServerProfile().orElseThrow().getOrganization().getId()
-							: u.getConsumerProfile().orElseThrow().getOrganization().getId();
-					return requesterOrg.equals(userOrg);
-				}, CommonFail.notFound(failMessage));
+				.filter(u -> hasPermissionToSee(requesterUser, u), CommonFail.notFound(failMessage));
+	}
+	
+	private boolean hasPermissionToSee(User requester, User target) {
+		if (requester.getId().equals(target.getId())) return true;
+		if (requester.isConsumer()) return false;
+		Long requesterOrg = requester.getServerProfile().orElseThrow().getOrganization().getId();
+		Long userOrg = target.isServer() ? target.getServerProfile().orElseThrow().getOrganization().getId()
+				: target.getConsumerProfile().orElseThrow().getOrganization().getId();
+		return requesterOrg.equals(userOrg);
 	}
 }
