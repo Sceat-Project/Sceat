@@ -12,6 +12,8 @@ import { InfoHolderComponent } from './kitchen/info-holder/info-holder.component
 import { MatCardModule } from "@angular/material/card";
 import { MatButtonModule} from "@angular/material/button";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgOptimizedImage} from "@angular/common";
+import { HttpClientModule } from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -21,14 +23,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     StatisticsViewComponent,
     PictureHolderComponent,
     DescriptionComponent,
-    InfoHolderComponent,
+    InfoHolderComponent
   ],
   imports: [
       BrowserModule,
       AppRoutingModule,
       BrowserAnimationsModule,
       MatCardModule,
-      MatButtonModule
+      MatButtonModule,
+      NgOptimizedImage,
+      HttpClientModule,
+      BrowserModule
   ],
   providers: [],
   bootstrap: [AppComponent]
