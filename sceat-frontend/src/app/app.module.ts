@@ -13,7 +13,8 @@ import { MatCardModule } from "@angular/material/card";
 import { MatButtonModule} from "@angular/material/button";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgOptimizedImage} from "@angular/common";
-import { HttpClientModule } from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule} from "@angular/common/http";
+import {AuthInterceptorService} from "./auth-interceptor.service";
 
 @NgModule({
   declarations: [
@@ -33,9 +34,17 @@ import { HttpClientModule } from "@angular/common/http";
       MatButtonModule,
       NgOptimizedImage,
       HttpClientModule,
-      BrowserModule
+      BrowserModule,
+      HttpClientXsrfModule.withOptions({
+          cookieName: 'JSESSIONID', // Replace with the actual cookie name
+          headerName: 'JSESSIONID', // Replace with the actual header name
+      }),
   ],
-  providers: [],
+  providers: [{
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
