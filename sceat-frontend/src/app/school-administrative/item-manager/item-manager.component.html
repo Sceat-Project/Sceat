@@ -1,1 +1,30 @@
 <p>item-manager works!</p>
+
+<form #myForm="ngForm" (ngSubmit)="onSubmit(); myForm.resetForm()" #addForm="ngForm">
+    <mat-form-field>
+        <input matInput
+            placeholder="Új étel neve:"
+            type="string" 
+            id="input_foodname" 
+            required
+            [(ngModel)]="input_foodname" name="input_foodname">
+    <mat-error *ngIf="!input_foodname">Value is required</mat-error>
+    </mat-form-field>
+    
+    <br><br>
+    
+    <mat-form-field>
+        <input matInput
+            placeholder="Új étel allergén adatai:"
+            type="string" 
+            id="input_allergens" 
+            required
+            [(ngModel)]="input_allergens" name="input_allergens">
+    <mat-error *ngIf="!input_allergens">Value is required</mat-error>
+    </mat-form-field>
+
+    <br><br>
+    
+    <button mat-flat-button type="submit" id="submit" value="submit" color="primary">Add New Item</button>
+
+</form>

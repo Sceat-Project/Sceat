@@ -16,6 +16,10 @@ import { NgOptimizedImage} from "@angular/common";
 import {HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule} from "@angular/common/http";
 import {AuthInterceptorService} from "./auth-interceptor.service";
 import { ItemManagerComponent } from './school-administrative/item-manager/item-manager.component';
+import { FormsModule } from '@angular/forms';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
 
 @NgModule({
   declarations: [
@@ -41,6 +45,10 @@ import { ItemManagerComponent } from './school-administrative/item-manager/item-
           cookieName: 'JSESSIONID', // Replace with the actual cookie name
           headerName: 'JSESSIONID', // Replace with the actual header name
       }),
+      FormsModule,
+      MatButtonModule,
+      MatFormFieldModule,
+      MatInputModule
   ],
   providers: [{
       provide: HTTP_INTERCEPTORS,
