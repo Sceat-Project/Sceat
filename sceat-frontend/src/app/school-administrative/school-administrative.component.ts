@@ -15,8 +15,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 export interface DialogData {
   id: number;
   name: string, 
-  foods: string[], 
-  allergens: string[], 
+  foods: string, 
+  allergens: string, 
   occasion: string, 
   date: Date, 
   cost: number
@@ -54,7 +54,7 @@ export class SchoolAdministrativeComponent {
   }
 
   onButtonClick(){
-    // Navigate to /products page
+    // Navigate to /item-manager page
     this.router.navigate(['/item-manager']);
   }
 
@@ -73,22 +73,29 @@ export class SchoolAdministrativeComponent {
   }
 
   modifyItems(){
-    console.log('this.dialogdata');
-    console.log(this.dialogdata);
-    console.log('this.allItems');
-    console.log(this.allItems);
 
     var index = 0;
     while(this.allItems[index].id != this.dialogdata.id){
       index++;
     }
+    var occasionOptions = ['FORENOON_FOOD', 'LUNCH', 'AFTERNOON_FOOD'];
+    var allergenOptions = ['GLUTEN', 'PEANUTS', 'TREE_NUTS', 'CELERY', 'MUSTARD', 'EGGS', 'MILK', 'SESAME', 'FISH', 'CRUSTACEANS', 'MOLLUSCS', 'SOYA', 'SULPHITES', 'LUPIN', 'MEAT'];
 
-    console.log("index: ");
-    console.log(index);
-    console.log("original: ");
-    console.log(this.allItems[index]);
+    var modifiedItem = new MenuItems();
+    modifiedItem.name = this.dialogdata.name;
+    for (var ingredient of this.dialogdata.foods.toString().split(/\s*,\s*/)) {if (ingredient) {modifiedItem.foods.push(ingredient);}}
+    for (var allergen of this.dialogdata.allergens.toString().split(/\s*,\s*/)) {if (allergenOptions.includes(allergen)) {modifiedItem.allergens.push(allergen);}}
+    if(occasionOptions.includes(this.dialogdata.occasion)) {
+      modifiedItem.occasion = this.dialogdata.occasion;
+    } else {
+      modifiedItem.occasion = '';
+    }
+    modifiedItem.cost = this.dialogdata.cost;
 
-    this.allItems[index] = this.dialogdata;
+    console.log(this.dialogdata);
+    console.log(modifiedItem);
+    
+    this.allItems[index] = modifiedItem;
     this.dialogdata = new MenuItems();
     this.newMessage();
   }
