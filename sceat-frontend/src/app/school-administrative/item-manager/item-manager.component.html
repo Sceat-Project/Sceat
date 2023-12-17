@@ -1,6 +1,18 @@
-<p>item-manager works!</p>
+<h2>Új étel hozzáadása</h2>
 
 <form #myForm="ngForm" (ngSubmit)="onSubmit(); myForm.resetForm()" #addForm="ngForm">
+    
+    <mat-form-field>
+    <mat-label>Napszak</mat-label>
+    <mat-select [(ngModel)]="input_occasion" name="occasion">
+        <mat-option *ngFor="let occasion of occasions" [value]="occasion.value">
+        {{occasion.viewValue}}
+        </mat-option>
+    </mat-select>
+    </mat-form-field>
+    
+    <br><br>
+    
     <mat-form-field>
         <input matInput
             placeholder="Új étel neve:"
