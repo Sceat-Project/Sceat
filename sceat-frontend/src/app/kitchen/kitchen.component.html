@@ -1,16 +1,25 @@
+<div class="student-pager">
+
+    <button mat-raised-button>Következő Diák</button>
+
+</div>
+
 <div class="kitchen-content-holder">
 
     <div class="picture-holder">
-        Alma
+        <img src="assets/images/ricsike.png" width="512px" class="student-picture" />
     </div>
     <div class="info-holder"   >
-        Körte
+        <div *ngFor="let key of enumKeys">
+            <mat-card class="allergen-card">
+                <img mat-card-image [src]="'assets/allergens/' + getImage(key)" width="64px"/>
+            </mat-card>
+        </div>
     </div>
     <div class="description"   >
-        Barack
+
     </div>
 
-    <button (click)="login()">Login</button>
-    <button (click)="getData()">GetData</button>
+
 
 </div>
