@@ -12,13 +12,15 @@ import { InfoHolderComponent } from './kitchen/info-holder/info-holder.component
 import { MatCardModule } from "@angular/material/card";
 import { MatButtonModule} from "@angular/material/button";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgOptimizedImage} from "@angular/common";
+import { NgFor, NgOptimizedImage} from "@angular/common";
 import {HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule} from "@angular/common/http";
 import {AuthInterceptorService} from "./auth-interceptor.service";
 import { ItemManagerComponent } from './school-administrative/item-manager/item-manager.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+
 
 
 @NgModule({
@@ -48,7 +50,9 @@ import { MatInputModule } from '@angular/material/input';
       FormsModule,
       MatButtonModule,
       MatFormFieldModule,
-      MatInputModule
+      MatInputModule,
+      MatSelectModule,
+      MatFormFieldModule, MatSelectModule, FormsModule, ReactiveFormsModule, NgFor
   ],
   providers: [{
       provide: HTTP_INTERCEPTORS,

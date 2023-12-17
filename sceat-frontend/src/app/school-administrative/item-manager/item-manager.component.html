@@ -15,16 +15,23 @@
     
     <mat-form-field>
         <input matInput
-            placeholder="Új étel allergén adatai:"
+            placeholder="Új étel összetevői:"
             type="string" 
-            id="input_allergens" 
+            id="input_ingredients" 
             required
-            [(ngModel)]="input_allergens" name="input_allergens">
-    <mat-error *ngIf="!input_allergens">Value is required</mat-error>
+            [(ngModel)]="input_ingredients" name="input_ingredients">
+    <mat-error *ngIf="!input_ingredients">Value is required</mat-error>
     </mat-form-field>
 
     <br><br>
-    
+
+    <mat-form-field>
+        <mat-label>Allergének</mat-label>
+        <mat-select [formControl]="allergens" multiple>
+          <mat-option *ngFor="let allergen of allergensList" [value]="allergen">{{allergen}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
     <button mat-flat-button type="submit" id="submit" value="submit" color="primary">Add New Item</button>
 
 </form>
