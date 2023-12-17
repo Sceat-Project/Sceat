@@ -1,10 +1,12 @@
-<h2>Az iskola ételadatbázisa</h2>
+<br>
+
+<h1><b>Az iskola ételadatbázisa</b></h1>
 
 <div class="box">
     <div class="row">
         <div class="col">
 
-          <button mat-flat-button (click)="onButtonClick()" color="primary" >Add New Item</button>
+          <button class="center-button" mat-flat-button (click)="onButtonClick()" color="primary" >Új Étel Hozzáadása</button>
 
           <table class="table">
             <thead>
@@ -20,7 +22,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let item of allItems">
+              <tr *ngFor="let item of allItems" class="bottom-border">
                 <th>{{item.id}}</th>
                 <td>{{item.name}}</td>
                 <td>{{item.foods}}</td>
@@ -28,7 +30,7 @@
                 <td>{{item.occasion}}</td>
                 <td>{{item.date | date}}</td>
                 <td>{{item.cost}}</td>
-                <td><button (click)="editItem(item)" mat-flat-button type="submit" color="primary">Edit</button></td>
+                <td><button (click)="editItem(item)" mat-flat-button type="submit" color="primary">Módosítás</button></td>
             </tr>
             </tbody>
           </table>

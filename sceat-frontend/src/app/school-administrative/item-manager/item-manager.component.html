@@ -1,4 +1,6 @@
-<h2>Új étel hozzáadása</h2>
+<br>
+
+<h1><b>Új étel hozzáadása</b></h1>
 
 <form #myForm="ngForm" (ngSubmit)="onSubmit(); myForm.resetForm()" #addForm="ngForm">
     
@@ -23,7 +25,7 @@
             [(ngModel)]="input_ingredients" name="input_ingredients">
     <mat-error *ngIf="!input_ingredients">Kötelező érték</mat-error>
     </mat-form-field>
-    <p style="font-size: 10px;">Kérjük az összetevőket pontosan, vesszővel elválasztva adja meg!</p>
+    <p style="font-size: 10px;" class="left-align" >Kérjük az összetevőket pontosan, vesszővel elválasztva adja meg!</p>
 
     <br>
 
@@ -60,13 +62,13 @@
     <br>
     
     <mat-form-field>
-        <mat-label>Choose a date</mat-label>
+        <mat-label>Dátum</mat-label>
         <input matInput [matDatepicker]="picker" [(ngModel)]="input_date" name="input_date">
-        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-hint>HH/NN/ÉÉÉÉ</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
-    <button mat-flat-button type="submit" id="submit" value="submit" color="primary">Add New Item</button>
+    <button mat-flat-button type="submit" id="submit" value="submit" color="primary">Új Étel Hozzáadása</button>
 
 </form>
