@@ -20,6 +20,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 
@@ -52,7 +54,13 @@ import {MatSelectModule} from '@angular/material/select';
       MatFormFieldModule,
       MatInputModule,
       MatSelectModule,
-      MatFormFieldModule, MatSelectModule, FormsModule, ReactiveFormsModule, NgFor
+      MatFormFieldModule, 
+      MatSelectModule, 
+      FormsModule, 
+      ReactiveFormsModule, 
+      NgFor,
+      MatDatepickerModule,
+      MatNativeDateModule
   ],
   providers: [{
       provide: HTTP_INTERCEPTORS,

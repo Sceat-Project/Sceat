@@ -21,7 +21,7 @@ export class ItemManagerComponent {
   public input_ingredients: string = '';
   public input_occasion: string = '';
   public input_cost: number = 0;
-
+  public input_date: Date = new Date();
   public item: MenuItems = new MenuItems()
 
   occasions: Occasions[] = [
@@ -45,6 +45,7 @@ export class ItemManagerComponent {
   onSubmit(){
     console.log("Submitted");
     console.log(this.input_occasion);
+    console.log(this.input_date);
     console.log(this.input_foodname);
     console.log(this.input_ingredients.split(/\s*,\s*/));
     console.log(this.allergens.value);
@@ -52,6 +53,7 @@ export class ItemManagerComponent {
 
     this.newData = new MenuItems();
     this.newData.occasion = this.input_occasion;
+    this.newData.date = this.input_date;
     this.newData.name = this.input_foodname;
     for (var ingredient of this.input_ingredients.split(/\s*,\s*/)) {if (ingredient) {this.newData.foods.push(ingredient);}}
     for (var allergen of this.allergens.value!){this.newData.allergens.push(allergen);}
