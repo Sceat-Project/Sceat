@@ -1,1 +1,35 @@
-<p>statistics-view works!</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <!-- <th>ID</th> -->
+            <th>Dátum</th>
+            <th>Gluténmentes menü</th>
+            <th>Tejmentes menü</th>
+            <th>Vegán menü</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let elem of menusTable">
+            <th>{{ elem.date }}</th>
+            <td>{{ elem.statistics.glutenfree }}</td>
+            <td>{{ elem.statistics.diaryfree }}</td>
+            <td>{{ elem.statistics.vegan }}</td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+<table class="table">
+    <thead>
+        <th>Allergia</th>
+        <th>Diákok ezzel az allergiával</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let a of allergens">
+            <th>{{getTooltip(a)}}</th>
+            <th>{{getRandomInt(50)}}</th>
+        </tr>
+    </tbody>
+</table>
