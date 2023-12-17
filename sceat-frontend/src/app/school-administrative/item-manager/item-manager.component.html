@@ -3,27 +3,6 @@
 <form #myForm="ngForm" (ngSubmit)="onSubmit(); myForm.resetForm()" #addForm="ngForm">
     
     <mat-form-field>
-    <mat-label>Napszak</mat-label>
-    <mat-select [(ngModel)]="input_occasion" name="occasion">
-        <mat-option *ngFor="let occasion of occasions" [value]="occasion.value">
-        {{occasion.viewValue}}
-        </mat-option>
-    </mat-select>
-    </mat-form-field>
-
-    <br>
-
-    <mat-form-field>
-        <mat-label>Choose a date</mat-label>
-        <input matInput [matDatepicker]="picker" [(ngModel)]="input_date" name="input_date">
-        <mat-hint>MM/DD/YYYY</mat-hint>
-        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-    
-    <br>
-    
-    <mat-form-field>
         <input matInput
             placeholder="Új étel neve:"
             type="string" 
@@ -67,6 +46,25 @@
     </mat-form-field>
     
     <br>
+
+    <mat-form-field>
+        <mat-label>Napszak</mat-label>
+        <mat-select [(ngModel)]="input_occasion" name="occasion">
+            <mat-option *ngFor="let occasion of occasions" [value]="occasion.value">
+            {{occasion.viewValue}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    
+    <br>
+    
+    <mat-form-field>
+        <mat-label>Choose a date</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="input_date" name="input_date">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
 
     <button mat-flat-button type="submit" id="submit" value="submit" color="primary">Add New Item</button>
 

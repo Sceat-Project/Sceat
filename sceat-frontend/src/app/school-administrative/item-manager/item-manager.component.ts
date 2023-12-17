@@ -15,7 +15,10 @@ interface Occasions {
 })
 export class ItemManagerComponent {
 
+  // Array of all the food items in the database
   private allItems: MenuItems[] = [];
+
+  // Variables for user input
   public newData: MenuItems = new MenuItems();
   public input_foodname: string = '';
   public input_ingredients: string = '';
@@ -33,6 +36,8 @@ export class ItemManagerComponent {
   allergens = new FormControl('');
   allergensList: string[] = ['GLUTEN', 'PEANUTS', 'TREE_NUTS', 'CELERY', 'MUSTARD', 'EGGS', 'MILK', 'SESAME', 'FISH', 'CRUSTACEANS', 'MOLLUSCS', 'SOYA', 'SULPHITES', 'LUPIN', 'MEAT'];
   
+  public globalId: number = 0;
+
   constructor(private data: DataTransferService) { 
   }
 
@@ -40,18 +45,20 @@ export class ItemManagerComponent {
     this.newData = new MenuItems();
     this.data.currentMessage.subscribe(message => this.allItems = message);
     console.log("Add New Item page is working!");
+    this.globalId = this.allItems[this.allItems.length-1].id;
   }
 
   onSubmit(){
+    
+    // Debugging
     console.log("Submitted");
-    console.log(this.input_occasion);
-    console.log(this.input_date);
-    console.log(this.input_foodname);
-    console.log(this.input_ingredients.split(/\s*,\s*/));
-    console.log(this.allergens.value);
-    console.log(this.input_cost);
+    console.log("Napszak: "+this.input_occasion+" Dárum: "+this.input_date);
+    console.log("Étel neve: "+this.input_foodname+" Összetevői: "+this.input_ingredients.split(/\s*,\s*/)+" Allergén adatok: "+this.allergens.value+" Ár: "+this.input_cost);
 
+    // Adding new user inputted item into the list
+    this.globalId++;
     this.newData = new MenuItems();
+    this.newData.id = this.globalId;
     this.newData.occasion = this.input_occasion;
     this.newData.date = this.input_date;
     this.newData.name = this.input_foodname;
@@ -68,6 +75,5 @@ export class ItemManagerComponent {
     console.log("[LOG - new-message]");
     this.data.changeMessage(this.allItems);
     console.log(this.allItems);
-
   }
 }

@@ -1,0 +1,45 @@
+<div mat-dialog-content>
+  <p>Add meg a módosításaidat!</p>
+  <mat-form-field>
+    <mat-label>Étel Neve</mat-label>
+    <input matInput [(ngModel)]="data.name">
+  </mat-form-field>
+  
+  <br>
+  
+  <mat-form-field>
+    <mat-label>Étel Összetevői</mat-label>
+    <input matInput [(ngModel)]="data.foods">
+  </mat-form-field>
+  <p style="font-size: 10px;">Kérjük az összetevőket pontosan, vesszővel elválasztva adja meg!</p>
+  
+  <br>
+
+  <mat-form-field>
+    <mat-label>Allergén Adatok</mat-label>
+    <input matInput [(ngModel)]="data.allergens">
+  </mat-form-field>
+  <p style="font-size: 10px;">Kérjük az allergénadatokat a következő opciók közül válassza ki és vesszővel elválasztva karakterre pontosan adja meg.</p>
+  <p style="font-size: 10px;">['GLUTEN', 'PEANUTS', 'TREE_NUTS', 'CELERY', 'MUSTARD', 'EGGS', 'MILK', 'SESAME', 'FISH', 'CRUSTACEANS', 'MOLLUSCS', 'SOYA', 'SULPHITES', 'LUPIN', 'MEAT']</p>
+  
+  <br>
+  
+  <mat-form-field>
+    <mat-label>Napszak</mat-label>
+    <input matInput [(ngModel)]="data.occasion">
+  </mat-form-field> 
+  <p style="font-size: 10px;">Kérjük az ételre vonatkozó napszak adatot a következő opciók közül válassza ki és pontosan adja meg.</p>
+  <p>['FORENOON_FOOD', 'LUNCH', 'AFTERNOON_FOOD']</p>
+  
+  <br>
+  
+  <mat-form-field>
+    <mat-label>Étel Ára</mat-label>
+    <input matInput [(ngModel)]="data.cost">
+  </mat-form-field>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Mégsem</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+</div>

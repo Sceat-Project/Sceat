@@ -12,7 +12,7 @@ import { InfoHolderComponent } from './kitchen/info-holder/info-holder.component
 import { MatCardModule } from "@angular/material/card";
 import { MatButtonModule} from "@angular/material/button";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgFor, NgOptimizedImage} from "@angular/common";
+import { CommonModule, NgFor, NgIf, NgOptimizedImage} from "@angular/common";
 import {HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule} from "@angular/common/http";
 import {AuthInterceptorService} from "./auth-interceptor.service";
 import { ItemManagerComponent } from './school-administrative/item-manager/item-manager.component';
@@ -22,7 +22,8 @@ import { MatInputModule } from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-
+import {MatTableModule} from '@angular/material/table';
+import {MatDialog, MAT_DIALOG_DATA, MatDialogRef, MatDialogModule} from '@angular/material/dialog';
 
 
 @NgModule({
@@ -54,13 +55,16 @@ import { MatNativeDateModule } from '@angular/material/core';
       MatFormFieldModule,
       MatInputModule,
       MatSelectModule,
-      MatFormFieldModule, 
       MatSelectModule, 
-      FormsModule, 
       ReactiveFormsModule, 
       NgFor,
       MatDatepickerModule,
-      MatNativeDateModule
+      MatNativeDateModule,
+      CommonModule,
+      MatTableModule,
+      NgIf,
+      MatDialogModule
+
   ],
   providers: [{
       provide: HTTP_INTERCEPTORS,

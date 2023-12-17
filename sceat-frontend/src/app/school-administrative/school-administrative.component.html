@@ -1,9 +1,10 @@
-<p>school-administrative works!</p>
+<h2>Az iskola ételadatbázisa</h2>
+
+<p>You chose: <em>{{dialogdata}}</em></p>
 
 <div class="box">
     <div class="row">
         <div class="col">
-          <h3 class="display-5">CÍM</h3>
 
           <button mat-flat-button (click)="onButtonClick()" color="primary" >Add New Item</button>
 
@@ -17,6 +18,7 @@
                 <th scope="col">Napszak</th>
                 <th scope="col">Dátum</th>
                 <th scope="col">Ár</th>
+                <th scope="col">Módosítás</th>
               </tr>
             </thead>
             <tbody>
@@ -26,8 +28,9 @@
                 <td>{{item.foods}}</td>
                 <td>{{item.allergens}}</td>
                 <td>{{item.occasion}}</td>
-                <td>{{item.date}}</td>
+                <td>{{item.date | date}}</td>
                 <td>{{item.cost}}</td>
+                <td><button (click)="editItem(item)" mat-flat-button type="submit" color="primary">Edit</button></td>
             </tr>
             </tbody>
           </table>
