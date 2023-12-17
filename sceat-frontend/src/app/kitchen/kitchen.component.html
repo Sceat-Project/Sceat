@@ -1,22 +1,28 @@
 <div class="student-pager">
 
-    <button mat-raised-button>Következő Diák</button>
+    <button mat-raised-button (click)="nextStudent()">Következő Diák</button>
 
 </div>
 
 <div class="kitchen-content-holder">
 
     <div class="picture-holder">
-        <img src="assets/images/ricsike.png" width="512px" class="student-picture" />
+        <img [src]="selectedStudent.picture" width="512px" class="student-picture" />
     </div>
     <div class="info-holder"   >
-        <div *ngFor="let key of enumKeys">
+        <div *ngFor="let key of selectedStudent.allergies">
             <mat-card class="allergen-card">
                 <img mat-card-image [src]="'assets/allergens/' + getImage(key)" width="64px"/>
             </mat-card>
         </div>
     </div>
     <div class="description"   >
+            <mat-card>
+                <mat-card-content>
+                    {{selectedStudent.name}}
+                    {{selectedStudent.class}}
+                </mat-card-content>
+            </mat-card>
 
     </div>
 

@@ -6,9 +6,6 @@ import { AppComponent } from './app.component';
 import { KitchenComponent } from './kitchen/kitchen.component';
 import { SchoolAdministrativeComponent } from './school-administrative/school-administrative.component';
 import { StatisticsViewComponent } from './statistics-view/statistics-view.component';
-import { PictureHolderComponent } from './kitchen/picture-holder/picture-holder.component';
-import { DescriptionComponent } from './kitchen/description/description.component';
-import { InfoHolderComponent } from './kitchen/info-holder/info-holder.component';
 import { MatCardModule } from "@angular/material/card";
 import { MatButtonModule} from "@angular/material/button";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,6 +21,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatTableModule} from '@angular/material/table';
 import {MatDialog, MAT_DIALOG_DATA, MatDialogRef, MatDialogModule} from '@angular/material/dialog';
+import { StudentreaderComponent } from './kitchen/student-reader/studentreader/studentreader.component';
 
 
 @NgModule({
@@ -32,10 +30,8 @@ import {MatDialog, MAT_DIALOG_DATA, MatDialogRef, MatDialogModule} from '@angula
     KitchenComponent,
     SchoolAdministrativeComponent,
     StatisticsViewComponent,
-    PictureHolderComponent,
-    DescriptionComponent,
-    InfoHolderComponent,
-    ItemManagerComponent
+    ItemManagerComponent,
+    StudentreaderComponent
   ],
   imports: [
       BrowserModule,
@@ -55,8 +51,8 @@ import {MatDialog, MAT_DIALOG_DATA, MatDialogRef, MatDialogModule} from '@angula
       MatFormFieldModule,
       MatInputModule,
       MatSelectModule,
-      MatSelectModule, 
-      ReactiveFormsModule, 
+      MatSelectModule,
+      ReactiveFormsModule,
       NgFor,
       MatDatepickerModule,
       MatNativeDateModule,
