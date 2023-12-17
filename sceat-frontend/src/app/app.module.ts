@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgOptimizedImage} from "@angular/common";
 import {HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule} from "@angular/common/http";
 import {AuthInterceptorService} from "./auth-interceptor.service";
+import { ItemManagerComponent } from './school-administrative/item-manager/item-manager.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import {AuthInterceptorService} from "./auth-interceptor.service";
     StatisticsViewComponent,
     PictureHolderComponent,
     DescriptionComponent,
-    InfoHolderComponent
+    InfoHolderComponent,
+    ItemManagerComponent
   ],
   imports: [
       BrowserModule,
