@@ -42,7 +42,21 @@
         <mat-select [formControl]="allergens" multiple>
           <mat-option *ngFor="let allergen of allergensList" [value]="allergen">{{allergen}}</mat-option>
         </mat-select>
-      </mat-form-field>
+    </mat-form-field>
+
+    <br><br>
+    
+    <mat-form-field>
+        <input matInput
+            placeholder="Új étel ára:"
+            type="number" 
+            id="input_cost" 
+            required
+            [(ngModel)]="input_cost" name="input_cost">
+    <mat-error *ngIf="!input_cost">Value is required</mat-error>
+    </mat-form-field>
+    
+    <br><br>
 
     <button mat-flat-button type="submit" id="submit" value="submit" color="primary">Add New Item</button>
 

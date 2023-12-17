@@ -20,6 +20,7 @@ export class ItemManagerComponent {
   public input_foodname: string = '';
   public input_ingredients: string = '';
   public input_occasion: string = '';
+  public input_cost: number = 0;
 
   public item: MenuItems = new MenuItems()
 
@@ -47,12 +48,14 @@ export class ItemManagerComponent {
     console.log(this.input_foodname);
     console.log(this.input_ingredients.split(/\s*,\s*/));
     console.log(this.allergens.value);
+    console.log(this.input_cost);
 
     this.newData = new MenuItems();
     this.newData.occasion = this.input_occasion;
     this.newData.name = this.input_foodname;
     for (var ingredient of this.input_ingredients.split(/\s*,\s*/)) {if (ingredient) {this.newData.foods.push(ingredient);}}
     for (var allergen of this.allergens.value!){this.newData.allergens.push(allergen);}
+    this.newData.cost = this.input_cost;
     
     this.allItems.push(this.newData);
     
