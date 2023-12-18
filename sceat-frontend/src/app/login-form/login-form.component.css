@@ -1,0 +1,17 @@
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+}
+
+.form-field {
+    margin-bottom: 15px;
+}
+
+.mat-sceat-green {
+    /* background-color: #78f4b5; */
+    background-color: #0c8079;
+
+    color: #fff;
+}

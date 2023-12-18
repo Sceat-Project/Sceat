@@ -22,6 +22,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import {MatTableModule} from '@angular/material/table';
 import {MatDialog, MAT_DIALOG_DATA, MatDialogRef, MatDialogModule} from '@angular/material/dialog';
 import { StudentreaderComponent } from './kitchen/student-reader/studentreader/studentreader.component';
+import { LoginFormComponent } from './login-form/login-form.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { StudentreaderComponent } from './kitchen/student-reader/studentreader/s
     SchoolAdministrativeComponent,
     StatisticsViewComponent,
     ItemManagerComponent,
-    StudentreaderComponent
+    StudentreaderComponent,
+    LoginFormComponent
   ],
   imports: [
       BrowserModule,
