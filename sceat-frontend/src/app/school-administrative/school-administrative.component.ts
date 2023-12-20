@@ -38,6 +38,64 @@ export class SchoolAdministrativeComponent {
 
   public dialogdata: MenuItems = new MenuItems();
 
+  public importItems: MenuItems[] = [
+    {
+      id: 1,
+      principal: 'Minta Péter',
+      organizationId: 1,
+      name: 'Sajtos Sonkás Szendvics',
+      date: new Date('2023-01-02'), // Monday
+      occasion: 'FORENOON_FOOD',
+      cost: 300,
+      foods: ['Zsemle', 'Sajt', 'Sonka', 'Margarin'],
+      allergens: ['GLUTEN', 'MILK', 'MEAT']
+    },
+    {
+      id: 2,
+      principal: 'Minta Péter',
+      organizationId: 1,
+      name: 'Töltöttkáposzta',
+      date: new Date('2023-01-04'), // Wednesday
+      occasion: 'LUNCH',
+      cost: 1000,
+      foods: ['Svanyított káposzta', 'Darált sertés hús', 'Rizs', 'Vöröshagyma', 'Fokhagyma', 'Fűszerpaprika', 'Só', 'Bors', 'Napraforgó olaj', 'Tejföl'],
+      allergens: ['GLUTEN', 'MEAT', 'EGGS', 'MILK']
+    },
+    {
+      id: 3,
+      principal: 'Minta Péter',
+      organizationId: 1,
+      name: 'Epres Joghurt Kiflivel',
+      date: new Date('2023-01-06'), // Friday
+      occasion: 'AFTERNOON_FOOD',
+      cost: 350,
+      foods: ['Zott Jogobella élőflórás joghurt 150 g', 'Kifli'],
+      allergens: ['MILK', 'GLUTEN']
+    },
+    {
+      id: 4,
+      principal: 'Minta Péter',
+      organizationId: 1,
+      name: 'Müzli tejjel',
+      date: new Date('2023-01-09'), // Monday
+      occasion: 'FORENOON_FOOD',
+      cost: 300,
+      foods: ['Tesco kakaós gabonapárnácskák vanílliaízű töltelékkel 200 g','Tej'],
+      allergens: ['GLUTEN', 'MILK', 'LUPIN']
+    },
+    {
+      id: 5,
+      principal: 'Minta Péter',
+      organizationId: 1,
+      name: 'Vegán Milánói Makaróni',
+      date: new Date('2023-01-11'), // Wednesday
+      occasion: 'LUNCH',
+      cost: 1200,
+      foods: ['vöröshagyma', 'étolaj', 'fokhagyma', 'gomba', 'lencse', 'paradicsompasszáta', 'tészta', 'só', 'bazsalikom'],
+      allergens: ['GLUTEN']
+    }
+  ];
+
   constructor(
     //private menuService: MenuService, - GET miatt kellene
     private router: Router,
@@ -50,7 +108,18 @@ export class SchoolAdministrativeComponent {
     
     this.data.currentMessage.subscribe(message => this.messageFromOtherComponent = message);
 
-    this.allItems = this.messageFromOtherComponent;
+    const existingNames = new Set(this.allItems.map(item => item.name));
+    const filteredImportItems = this.importItems.filter(item => !existingNames.has(item.name));
+    const existingNames2 = new Set (filteredImportItems.map(item => item.name));
+    const filteredMessageItems = this.messageFromOtherComponent.filter(item => !existingNames2.has(item.name));
+    this.allItems = [ 
+      ... filteredImportItems,
+      ... filteredMessageItems
+    ];
+    console.log(filteredImportItems);
+    console.log(filteredMessageItems);
+    console.log(this.allItems);
+    this.newMessage();
   }
 
   onButtonClick(){
@@ -82,6 +151,7 @@ export class SchoolAdministrativeComponent {
     var allergenOptions = ['GLUTEN', 'PEANUTS', 'TREE_NUTS', 'CELERY', 'MUSTARD', 'EGGS', 'MILK', 'SESAME', 'FISH', 'CRUSTACEANS', 'MOLLUSCS', 'SOYA', 'SULPHITES', 'LUPIN', 'MEAT'];
 
     var modifiedItem = new MenuItems();
+    modifiedItem.id = this.dialogdata.id;
     modifiedItem.name = this.dialogdata.name;
     for (var ingredient of this.dialogdata.foods.toString().split(/\s*,\s*/)) {if (ingredient) {modifiedItem.foods.push(ingredient);}}
     for (var allergen of this.dialogdata.allergens.toString().split(/\s*,\s*/)) {if (allergenOptions.includes(allergen)) {modifiedItem.allergens.push(allergen);}}

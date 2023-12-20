@@ -25,7 +25,7 @@ export class ItemManagerComponent {
   public input_occasion: string = '';
   public input_cost: number = 0;
   public input_date: Date = new Date();
-  public item: MenuItems = new MenuItems()
+  public item: MenuItems = new MenuItems();
 
   occasions: Occasions[] = [
     {value: 'FORENOON_FOOD', viewValue: 'Tízórai'},
@@ -45,7 +45,10 @@ export class ItemManagerComponent {
     this.newData = new MenuItems();
     this.data.currentMessage.subscribe(message => this.allItems = message);
     console.log("Add New Item page is working!");
-    this.globalId = this.allItems[this.allItems.length-1].id;
+    console.log(this.allItems);
+    this.globalId = this.getMaxId();
+    console.log(this.globalId);
+
   }
 
   onSubmit(){
@@ -67,7 +70,7 @@ export class ItemManagerComponent {
     this.newData.cost = this.input_cost;
     
     this.allItems.push(this.newData);
-    
+
     this.newMessage();
   }
 
@@ -75,5 +78,15 @@ export class ItemManagerComponent {
     console.log("[LOG - new-message]");
     this.data.changeMessage(this.allItems);
     console.log(this.allItems);
+  }
+
+  getMaxId(): number {
+    let maxId = 0;
+    this.allItems.forEach(item => {
+      if (item.id && item.id > maxId) {
+        maxId = item.id;
+      }
+    });
+    return maxId;
   }
 }
