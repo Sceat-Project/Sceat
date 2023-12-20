@@ -3,21 +3,43 @@
         <img src="assets/images/sceat-logo.png" width="64"  alt="Logo">
     </div>
 
-    <nav>
-        <button routerLink="kitchen" mat-raised-button>
-            Kitchen
-        </button>
-        <button routerLink="admin" mat-raised-button>
-            School Admin
-        </button>
-        <button routerLink="statistics" mat-raised-button>
-            Statistics
-        </button>
-    </nav>
+    <div *ngIf="isloggedin; else login">
+        <nav>
+            <button routerLink="kitchen" mat-raised-button>
+                Konyha
+            </button>
+            <button routerLink="admin" mat-raised-button>
+                Iskola Admin
+            </button>
+            <button routerLink="statistics" mat-raised-button>
+                Statisztika
+            </button>
+            <button routerLink="" (click)="onLogout()" mat-raised-button>
+                Kilépés
+            </button>
+        </nav>
+    </div>
+    <ng-template #login>
+        <nav>
+            <button routerLink="kitchen" mat-raised-button disabled>
+                Konyha
+            </button>
+            <button routerLink="admin" mat-raised-button disabled>
+                Iskola Admin
+            </button>
+            <button routerLink="statistics" mat-raised-button disabled>
+                Statisztika
+            </button>
+        </nav>
+    </ng-template>
+
 </header>
-<div id="content-body">
+<div id="content-body" *ngIf="isloggedin; else loginForm">
     <router-outlet></router-outlet>
 </div>
+<ng-template #loginForm>
+    <app-login-form (loginSuccess)="onLoginSuccess()"></app-login-form>
+</ng-template>
 <footer>
 
 </footer>

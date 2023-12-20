@@ -9,8 +9,16 @@ import {AuthserviceService} from "./services/authservice.service";
 })
 export class AppComponent {
   title = 'sceat-frontend';
-
+    isloggedin: boolean = false;
     constructor(private authService: AuthserviceService) { }
 
+    onLoginSuccess() {
+        this.isloggedin = true;
+    }
+
+    onLogout()
+    {
+        this.isloggedin = false;
+    }
 
 }

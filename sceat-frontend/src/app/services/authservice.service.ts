@@ -17,7 +17,7 @@ export class AuthserviceService {
 
     login(email: string, password: string): Observable<any> {
         const body = { email, password };
-        return this.http.post(`${this.apiUrl}/auth/login?email=consumer-a@elte.hu&password=password`, body,
+        return this.http.post(`${this.apiUrl}/auth/login?email=${body.email}&password=${body.password}`, body,
             {
                 headers: this.headers,
                 withCredentials: true,
