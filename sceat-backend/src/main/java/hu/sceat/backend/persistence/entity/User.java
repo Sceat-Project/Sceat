@@ -116,4 +116,8 @@ public class User {
 	public void clearFirstLoginFlag() {
 		this.firstLoginFlag = false;
 	}
+	
+	public void fillFirstLoginFlag() {
+		this.firstLoginFlag = true;
+	}
 }

@@ -86,9 +86,11 @@ public class UserServiceTest extends TestDataInitializer {
 	}
 	
 	@Test
-	void getClearFirstLoginFlag() {
+	void getClearFillFirstLoginFlag() {
 		Assertions.assertTrue(userService.getFirstLoginFlag(testConsumer));
 		userService.clearFirstLoginFlag(testConsumer);
 		Assertions.assertFalse(userService.getFirstLoginFlag(testConsumer));
+		userService.fillFirstLoginFlag(testConsumer);
+		Assertions.assertTrue(userService.getFirstLoginFlag(testConsumer));
 	}
 }

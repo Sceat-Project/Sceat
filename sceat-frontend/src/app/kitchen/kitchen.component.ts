@@ -198,61 +198,6 @@ export class KitchenComponent implements OnInit {
         return returnValue;
     }
 
-    getTooltip(key: string) {
-
-        let returnValue;
-
-        switch (key) {
-            case ('GLUTEN'):
-                returnValue = "Glutén allergia";
-                break;
-            case('PEANUTS'):
-                returnValue = "Mogyoróallergia";
-                break;
-            case('TREE_NUTS'):
-                returnValue = "Diófélék allergia";
-                break;
-            case('CELERY'):
-                returnValue = "Zeller allergia";
-                break;
-            case('MUSTARD'):
-                returnValue = "Mustár allergia";
-                break;
-            case('EGGS'):
-                returnValue = "Tojás allergia";
-                break;
-            case('MILK'):
-                returnValue = "Tej allergia";
-                break;
-            case('SESAME'):
-                returnValue = "Szezámmag allergia";
-                break;
-            case('FISH'):
-                returnValue = "Hal allergia/Vegetárináus";
-                break;
-            case('CRUSTACEANS'):
-                returnValue = "Rákféle allergia/Vegetáriánus";
-                break;
-            case('MOLLUSCS'):
-                returnValue = "Tengergyümölcsei allergia";
-                break;
-            case('SOYA'):
-                returnValue = "Szója allergia";
-                break;
-            case('SULPHITES'):
-                returnValue = "Szulfát allergia";
-                break;
-            case('LUPIN'):
-                returnValue = "Lupin allergia";
-                break;
-            case('MEAT'):
-                returnValue = "Hús allergia/Vegetáriánus";
-                break;
-        }
-
-        return returnValue;
-    }
-
 
 
     protected readonly Allergens = Allergens;

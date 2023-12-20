@@ -1,6 +1,7 @@
 package hu.sceat.backend.business.service;
 
 import hu.sceat.backend.business.dto.DtoMapper;
+import hu.sceat.backend.business.dto.MenuCountDto;
 import hu.sceat.backend.business.dto.MenuDto;
 import hu.sceat.backend.business.dto.OrganizationDto;
 import hu.sceat.backend.business.dto.OrganizationRefDto;
@@ -10,6 +11,7 @@ import hu.sceat.backend.business.fail.Fail;
 import hu.sceat.backend.business.id.UserId;
 import hu.sceat.backend.persistence.Validation;
 import hu.sceat.backend.persistence.entity.Consumer;
+import hu.sceat.backend.persistence.entity.Menu;
 import hu.sceat.backend.persistence.entity.Organization;
 import hu.sceat.backend.persistence.entity.Server;
 import hu.sceat.backend.persistence.repository.OrganizationRepository;
@@ -52,11 +54,20 @@ public class OrganizationService {
 			LocalDate startDate, LocalDate endDate) {
 		//TODO optimize this by querying menus directly (adding the date filter to the query)
 		return getWhereMember(requester, organizationId)
-				.map(o -> o.getMenus().stream()
-						.filter(menu -> (menu.getDate().isEqual(startDate) || menu.getDate().isAfter(startDate))
-								&& menu.getDate().isBefore(endDate))
+				.map(o -> getMenusBetween(o, startDate, endDate)
 						.map(DtoMapper.INSTANCE::toMenu)
 						.toList());
+	}
+	
+	@Transactional
+	public Try<Collection<MenuCountDto>, Fail> getMenuPurchaseCounts(UserId requester, Long organizationId,
+			LocalDate startDate, LocalDate endDate) {
+		return getWhereServer(requester, organizationId)
+				.map(o -> getMenusBetween(o, startDate, endDate)
+						.map(menu -> new MenuCountDto(
+								DtoMapper.INSTANCE.toMenu(menu),
+								menu.getPurchasers().size())
+						).toList());
 	}
 	
 	@Transactional
@@ -99,6 +110,13 @@ public class OrganizationService {
 					orgRepo.delete(org);
 					return Unit.get();
 				});
+	}
+	
+	@Transactional
+	Stream<Menu> getMenusBetween(Organization org, LocalDate startDate, LocalDate endDate) {
+		return org.getMenus().stream()
+				.filter(menu -> (menu.getDate().isEqual(startDate) || menu.getDate().isAfter(startDate))
+						&& menu.getDate().isBefore(endDate));
 	}
 	
 	@Transactional

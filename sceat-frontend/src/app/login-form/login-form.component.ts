@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
+import {AuthserviceService} from "../services/authservice.service";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-login-form',
@@ -7,11 +9,24 @@ import { MatInputModule } from '@angular/material/input';
   styleUrls: ['./login-form.component.css']
 })
 export class LoginFormComponent {
-  email: string = '';
-  password: string = '';
+    loginform: FormGroup;
 
-  onSubmit() {
-    console.log('Email:', this.email);
-    console.log('Password:', this.password);
-  }
+    @Output() loginSuccess = new EventEmitter<void>();
+
+    constructor(private authService: AuthserviceService, private fb: FormBuilder) {
+        this.loginform = this.fb.group({
+            email: ['', Validators.required],
+            password: ['', Validators.required]
+        });
+
+    }
+
+    onSubmit() {
+
+        this.authService.login(this.loginform.value.email, this.loginform.value.password);
+        this.loginSuccess.emit();
+        console.log('BELÉPÉS SIKERES');
+        console.log(this.authService.login(this.loginform.value.email, this.loginform.value.password));
+
+    }
 }
