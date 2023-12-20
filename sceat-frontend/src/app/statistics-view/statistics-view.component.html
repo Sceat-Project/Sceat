@@ -1,37 +1,44 @@
+<!-- <mat-card class="card">
+<mat-form-field>
+    <mat-label>Enter a date range</mat-label>
+    <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+        <input matStartDate formControlName="start" placeholder="Start date" />
+        <input matEndDate formControlName="end" placeholder="End date" />
+    </mat-date-range-input>
+    <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+</mat-form-field>
 
+<p>Selected range: {{ range.value | json }}</p>
+<p>{{range.value.start | date}}</p>
+</mat-card> -->
+    
 <table class="table">
-    <caption>Rendelt menük darabszáma napokra lebontva</caption>
-    <thead>
-        <tr>
-            <!-- <th>ID</th> -->
-            <th>Dátum</th>
-            <th>Gluténmentes menü</th>
-            <th>Tejmentes menü</th>
-            <th>Vegán menü</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let elem of menusTable">
-            <th>{{ elem.date }}</th>
-            <td>{{ elem.statistics.glutenfree }}</td>
-            <td>{{ elem.statistics.diaryfree }}</td>
-            <td>{{ elem.statistics.vegan }}</td>
-        </tr>
-    </tbody>
+    <caption>Rendelések ({{range.start}} – {{range.end}})</caption>
+    <tr *ngFor="let date of Object.keys(groupby(menuMap(menusPurchased),'date'))">
+        <th>{{date }}</th>
+        <td>
+            <ng-container *ngFor="let m of menuFilterByDate(menusPurchased,date)">
+                {{m.menu.name}} : {{m.count}} db<br>
+            </ng-container>
+        </td>
+    </tr>
 </table>
 
 
-
 <table class="table">
-    <caption>Az intézményben az ételallergiával rendelkezők száma</caption>
+    <caption>
+        Az intézményben az ételallergiával rendelkezők száma
+    </caption>
     <thead>
         <th>Allergia</th>
         <th>Diákok ezzel az allergiával</th>
     </thead>
     <tbody>
         <tr *ngFor="let a of allergens">
-            <th>{{getTooltip(a)}}</th>
-            <th>{{getRandomInt(50)}}</th>
+            <th>{{ getTooltip(a) }}</th>
+            <th>{{ a.length }}</th>
         </tr>
     </tbody>
 </table>
