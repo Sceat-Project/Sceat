@@ -63,6 +63,13 @@ public class UserService {
 	}
 	
 	@Transactional
+	public void fillFirstLoginFlag(UserId requester) {
+		User user = userRepo.getReferenceById(requester.id());
+		user.fillFirstLoginFlag();
+		userRepo.save(user);
+	}
+	
+	@Transactional
 	Try<User, Fail> getById(UserId requester, Long userId) {
 		return getBySpecification(requester, UserRepository.same(User.fromId(userId)), "user " + userId);
 	}

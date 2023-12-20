@@ -1,6 +1,7 @@
 package hu.sceat.backend.presentation.controller;
 
 import hu.sceat.backend.business.PrincipalUser;
+import hu.sceat.backend.business.dto.MenuCountDto;
 import hu.sceat.backend.business.dto.MenuDto;
 import hu.sceat.backend.business.dto.OrganizationDto;
 import hu.sceat.backend.business.dto.UserRefDto;
@@ -37,6 +38,14 @@ public class OrganizationController {
 			@PathVariable Long organizationId, @RequestParam LocalDate startDate,
 			@RequestParam LocalDate endDate) {
 		return orgService.listMenus(principal, organizationId, startDate, endDate)
+				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
+	}
+	
+	@GetMapping("/id/{organizationId}/menuPurchaseCounts")
+	public ResponseEntity<Collection<MenuCountDto>> getMenuPurchaseCounts(PrincipalUser principal,
+			@PathVariable Long organizationId, @RequestParam LocalDate startDate,
+			@RequestParam LocalDate endDate) {
+		return orgService.getMenuPurchaseCounts(principal, organizationId, startDate, endDate)
 				.get(ResponseUtil::respondOk, ResponseUtil::respondFail);
 	}
 	

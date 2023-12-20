@@ -56,4 +56,10 @@ public class UserController {
 		userService.clearFirstLoginFlag(principal);
 		return ResponseUtil.respondOk();
 	}
+	
+	@PostMapping("/self/fillFirstLoginFlag")
+	public ResponseEntity<Void> postFillFirstLoginFlag(PrincipalUser principal) {
+		userService.fillFirstLoginFlag(principal);
+		return ResponseUtil.respondOk();
+	}
 }
